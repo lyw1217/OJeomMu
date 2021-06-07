@@ -181,6 +181,7 @@ Thumbs.db
 
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 *.code-workspace
 
