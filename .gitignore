@@ -181,8 +181,8 @@ Thumbs.db
 
 
 ### VisualStudioCode ###
-.vscode
-.vscode/*
+**/.vscode/
+**/.vscode/*
 *.code-workspace
 
 ### VisualStudioCode Patch ###
