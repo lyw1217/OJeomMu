@@ -4,9 +4,10 @@ import json
 import configparser
 from flask import Flask
 
+# https://wikidocs.net/book/4542 참고
+
 BASE_DIR = os.getcwd()
 config_file = BASE_DIR + "/apiKeys.ini"
-print(config_file)
 config 		= configparser.ConfigParser()
 config.read(config_file , encoding='UTF8')
 kakao_api_key       = config['KAKAO']['API_KEY']
@@ -32,7 +33,9 @@ def create_app() :
         return f'Hello, {user_name}({user_id})!'
 
     return app
-
+'''
+# flask run 명령어 수행하면 create_app() 함수가 수행됨 (애플리케이션 팩토리)
 if __name__ == '__main__' :
     app = create_app()
     app.run(debug=True)
+'''
