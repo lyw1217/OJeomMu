@@ -2,6 +2,7 @@ import os
 import configparser
 
 BASE_DIR = os.getcwd()
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 CONFIG_FILE = os.path.join(BASE_DIR , "apiKeys.ini")
 
 config 		= configparser.ConfigParser()

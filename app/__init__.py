@@ -3,7 +3,6 @@ import os
 import json
 import configparser
 from flask import Flask, render_template
-import config
 
 # https://wikidocs.net/book/4542 참고
 
@@ -16,7 +15,9 @@ def server_error(e):
 def create_app() :
 
     app = Flask(__name__)
-
+    
+    app.config.from_envvar('APP_CONFIG_FILE')
+    
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
