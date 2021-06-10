@@ -4,15 +4,13 @@ import json
 import configparser
 
 BASE_DIR = os.getcwd()
-
-config_file = BASE_DIR + "/apiKeys.ini"
+config_file = os.path.join(BASE_DIR , "apiKeys.ini")
 config 		= configparser.ConfigParser()
 config.read(config_file ,encoding='UTF8')
 kakao_api_key       = config['KAKAO']['API_KEY']
 google_api_key      = config['GOOGLE']['KEY']
 naver_api_id        = config['NAVER']['ID']
 naver_api_secert    = config['NAVER']['SECRET']
-
 
 # 구글 Geolocation API (https://developers.google.com/maps/documentation/geolocation/overview)
 url = 'https://www.googleapis.com/geolocation/v1/geolocate?key={}'.format(google_api_key)
