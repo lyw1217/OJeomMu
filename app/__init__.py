@@ -10,6 +10,9 @@ import config
 def page_not_found(e):
     return render_template('404.html'), 404
 
+def server_error(e):
+    return render_template('500.html'), 500
+
 def create_app() :
 
     app = Flask(__name__)
@@ -17,10 +20,12 @@ def create_app() :
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
-     # 오류페이지
+    # 오류페이지
     app.register_error_handler(404, page_not_found)
+    app.register_error_handler(500, server_error)
 
     return app
+
 '''
 # flask run 명령어 수행하면 create_app() 함수가 수행됨 (애플리케이션 팩토리)
 if __name__ == '__main__' :
