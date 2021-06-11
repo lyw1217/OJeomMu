@@ -9,6 +9,7 @@ config 		= configparser.ConfigParser()
 config.read(CONFIG_FILE ,encoding='UTF8')
 
 KAKAO_API_KEY       = config['KAKAO']['API_KEY']
+KAKAO_JS_KEY        = config['KAKAO']['JS_KEY']
 GOOGLE_API_KEY      = config['GOOGLE']['KEY']
 NAVER_API_ID        = config['NAVER']['ID']
 NAVER_API_SECERT    = config['NAVER']['SECRET']
