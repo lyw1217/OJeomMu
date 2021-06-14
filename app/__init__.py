@@ -1,10 +1,17 @@
+# https://wikidocs.net/book/4542 참고
+
 import requests
 import os
 import json
 import configparser
 from flask import Flask, render_template
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+import config
 
-# https://wikidocs.net/book/4542 참고
+# SQLAlchemy 적용하기
+db = SQLAlchemy()
+migrate = Migrate()
 
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -15,9 +22,18 @@ def server_error(e):
 def create_app() :
 
     app = Flask(__name__)
+
+    app.config.from_object(config)
+
+    # ORM
+    db.init_app(app)
+    migrate.init_app(app, db)
     
+    from . import models
+
     app.config.from_envvar('APP_CONFIG_FILE')
     
+    # 블루프린트 적용
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
