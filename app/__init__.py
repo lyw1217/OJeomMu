@@ -34,9 +34,10 @@ def create_app() :
     app.config.from_envvar('APP_CONFIG_FILE')
     
     # 블루프린트 적용
-    from .views import main_views, question_views
+    from .views import main_views, question_views, answer_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(question_views.bp)
+    app.register_blueprint(answer_views.bp)
 
     # 오류페이지
     app.register_error_handler(404, page_not_found)
