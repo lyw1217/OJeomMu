@@ -5,7 +5,6 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flaskext.markdown import Markdown
-import config
 
 # SQLAlchemy 적용하기
 naming_convention = {
@@ -28,8 +27,7 @@ def server_error(e):
 def create_app() :
 
     app = Flask(__name__)
-
-    app.config.from_object(config)
+    app.config.from_envvar('APP_CONFIG_FILE')
 
     # ORM
     db.init_app(app)
@@ -41,7 +39,6 @@ def create_app() :
     
     from . import models
 
-    app.config.from_envvar('APP_CONFIG_FILE')
     
     # 블루프린트 적용
     from .views import main_views, question_views, answer_views, auth_views, comment_views, vote_views

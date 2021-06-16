@@ -217,9 +217,13 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,windows,python
 
-apiKeys.ini
+**/apiKeys.ini
 
 **/migrations/*
 **/ojeommu.db
 
 **/config/*
+
+**/log/*
+
+run.sh
