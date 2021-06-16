@@ -221,3 +221,5 @@ apiKeys.ini
 
 **/migrations/*
 **/ojeommu.db
+
+**/config/*
