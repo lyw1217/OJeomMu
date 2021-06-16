@@ -35,6 +35,10 @@ def create_app() :
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
 
+    # 필터
+    from .filter import format_datetime
+    app.jinja_env.filters['datetime'] = format_datetime
+
     # 오류페이지
     app.register_error_handler(404, page_not_found)
     app.register_error_handler(500, server_error)
