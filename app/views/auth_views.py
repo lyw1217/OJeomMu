@@ -1,6 +1,7 @@
 from flask import Blueprint, url_for, render_template, flash, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
+import functools
 
 from app import db
 from app.forms import UserCreateForm, UserLoginForm
@@ -59,3 +60,12 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('main.home'))
+
+# 데코레이터 함수
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+    return wrapped_view
