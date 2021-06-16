@@ -5,12 +5,23 @@
         <div class="col-12 text-center">
             <span class="display-1 d-block">Main Page</span>
             <div class="mb-4 lead">메인 페이지가 될테야</div>
-            <div><a href="/question" class="btn btn-light">질문하기</a></div>
+            <div><a href="{{ url_for('question._list') }}" class="btn btn-light">질문하기</a></div>
+            <div><br></div>
             <div><a onClick="window.location.reload()" class="btn btn-light">새로 고침</a></div>
         </div>
     </div>
+    <div><br></div>
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+        <button type="button" class="btn btn-primary" onclick="getCurrentPosBtn()">내 위치 가져오기</button>
+        </div>
+        <div id="map" style="width:750px;height:350px;"></div>
+    </div>
 </div>
-<div id="map" style="width:750px;height:350px;"></div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='map.js') }}"></script>
 
 <script src="http://dapi.kakao.com/v2/maps/sdk.js?appkey={{key}}"></script>
 <script>
@@ -23,6 +34,5 @@
 
     // 지도를 생성한다 
     var map = new kakao.maps.Map(mapContainer, mapOption); 
-
 </script>
 {% endblock %}
