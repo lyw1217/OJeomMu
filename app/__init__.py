@@ -4,6 +4,7 @@ from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from flaskext.markdown import Markdown
 import config
 
 # SQLAlchemy 적용하기
@@ -59,6 +60,9 @@ def create_app() :
     app.register_error_handler(404, page_not_found)
     app.register_error_handler(500, server_error)
 
+    # markdown
+    Markdown(app, extensions=['nl2br', 'fenced_code'])
+    
     return app
 
 '''
