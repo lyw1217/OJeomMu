@@ -1,9 +1,5 @@
 # https://wikidocs.net/book/4542 참고
 
-import requests
-import os
-import json
-import configparser
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
