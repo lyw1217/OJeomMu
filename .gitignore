@@ -220,6 +220,7 @@ $RECYCLE.BIN/
 **/apiKeys.ini
 
 **/migrations/*
+**/migrations_bk/*
 **/ojeommu.db
 
 **/config/*
