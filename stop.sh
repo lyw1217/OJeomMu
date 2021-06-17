@@ -6,18 +6,17 @@ WAIT_TIME=7
 
 # sudo check
 if [ $(id -u) -ne 0 ]; then exec sudo bash "$0" "$@"; exit; fi
-
+echo ""
 echo "--------------------------"
 echo "     [ OJEOMMU STOP ]     "
 echo "--------------------------"
+echo ""
 
-sleep 1
+sleep 0.5
 
-cd /home/ec2-user/app/OJeomMu
+echo ""
 
 if [ $(systemctl is-active $SERVER_SVC ) == "active" ]; then
-	echo ""
-
 	echo "> ${SERVER_SVC}가 이미 구동중입니다."
 	echo "> 종료 하는 중..."
 	systemctl stop ${SERVER_SVC}
@@ -34,11 +33,13 @@ if [ $(systemctl is-active $SERVER_SVC ) == "active" ]; then
 			exit
 		fi
 	done
+else
+	echo "> ${SERVER_SVC}가 구동중이지 않습니다."
 fi
 
-if [ $(systemctl is-active $GUNICORN_SVC ) == "active" ]; then
-	echo ""
+echo ""
 
+if [ $(systemctl is-active $GUNICORN_SVC ) == "active" ]; then
 	echo "> ${GUNICORN_SVC}가 이미 구동중입니다."
 	echo "> 종료 하는 중..."
 	systemctl stop ${GUNICORN_SVC}
@@ -55,6 +56,9 @@ if [ $(systemctl is-active $GUNICORN_SVC ) == "active" ]; then
 			exit
 		fi
 	done
-	
-	echo ""
+else
+	echo "> ${GUNICORN_SVC}가 구동중이지 않습니다."
 fi
+
+echo ""
+
