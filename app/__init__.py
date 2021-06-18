@@ -24,11 +24,22 @@ def page_not_found(e):
 def server_error(e):
     return render_template('500.html'), 500
 
-def create_app() :
+def register_blueprints_on_app(app):
+    # 블루프린트 적용
+    from .views import main_views, question_views, answer_views, auth_views, comment_views, vote_views
+
+    app.register_blueprint(main_views.bp)
+    app.register_blueprint(question_views.bp)
+    app.register_blueprint(answer_views.bp)
+    app.register_blueprint(auth_views.bp)
+    app.register_blueprint(comment_views.bp)
+    app.register_blueprint(vote_views.bp)
+
+def create_app(register_blueprints=True) :
 
     app = Flask(__name__)
     app.config.from_envvar('APP_CONFIG_FILE')
-
+    
     # ORM
     db.init_app(app)
     migrate.init_app(app, db)
@@ -39,16 +50,9 @@ def create_app() :
     
     from . import models
 
+    if register_blueprints :
+        register_blueprints_on_app(app)
     
-    # 블루프린트 적용
-    from .views import main_views, question_views, answer_views, auth_views, comment_views, vote_views
-    app.register_blueprint(main_views.bp)
-    app.register_blueprint(question_views.bp)
-    app.register_blueprint(answer_views.bp)
-    app.register_blueprint(auth_views.bp)
-    app.register_blueprint(comment_views.bp)
-    app.register_blueprint(vote_views.bp)
-
     # 필터
     from .filter import format_datetime
     app.jinja_env.filters['datetime'] = format_datetime
