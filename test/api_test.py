@@ -4,7 +4,7 @@ import json
 import configparser
 
 BASE_DIR = os.getcwd()
-config_file = os.path.join(BASE_DIR , "apiKeys.ini")
+config_file = os.path.join(BASE_DIR , "config/apiKeys.ini")
 config 		= configparser.ConfigParser()
 config.read(config_file ,encoding='UTF8')
 kakao_api_key       = config['KAKAO']['API_KEY']
