@@ -1,0 +1,25 @@
+<!--main.html-->
+{{ define "templates/index.html"}}
+{{ template "header.html" .}}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <span class="display-3 d-block">오점무</span>
+            <div class="mb-4 lead">오늘 점심 뭐 먹지?</div>
+            <div><a href="question/question_list.html" class="btn btn-light">질문하기</a></div>
+            <div><br></div>
+            <div><a onClick="window.location.reload()" class="btn btn-light">새로 고침</a></div>
+        </div>
+    </div>
+    <div><br></div>
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+        <button type="button" class="btn btn-primary" onclick="getCurrentPosBtn()">내 위치 가져오기</button>
+        </div>
+        <div id="map" style="width:750px;height:350px;"></div>
+    </div>
+</div>
+<p id="result"></p>
+
+{{ template "footer.html" .}}
+{{ end }}
