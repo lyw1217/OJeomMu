@@ -1,6 +1,9 @@
 <!--main.html-->
-{{ define "templates/index.html"}}
-{{ template "header.html" .}}
+
+{{ define "views/index.html"}}
+
+{{ template "layouts/header.html" .}}
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 text-center">
@@ -21,5 +24,6 @@
 </div>
 <p id="result"></p>
 
-{{ template "footer.html" .}}
+{{ template "layouts/footer.html" .}}
+
 {{ end }}
