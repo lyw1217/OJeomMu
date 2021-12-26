@@ -1,31 +1,25 @@
 package main
 
 import (
-	"net/http"
+	"ojeommu/controller"
 
 	"github.com/gin-gonic/gin"
 )
 
-// HomePage : GET, "/"
-func HomePage(c *gin.Context) {
-	c.HTML(
-		http.StatusOK,
-		"templates/index.html",
-		gin.H{},
-	)
-}
+var r *gin.Engine
 
 func main() {
-	r := gin.Default()
+	r = gin.Default()
 
 	r.Static("/css", "./static/css")
 	r.Static("/js", "./static/js")
+	r.Static("/vendor", "./static/vendor")
 	r.StaticFile("/favicon.ico", "./static/favicon.ico")
 
-	r.LoadHTMLGlob("templates/*")
-	//r.LoadHTMLFiles("templates/index.html")
+	r.LoadHTMLGlob("templates/**/*")
+	// Initialize the routes
+	controller.InitRoutes(r)
 
-	r.GET("/", HomePage)
 	r.Run(":8090")
 }
 
