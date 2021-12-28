@@ -17,24 +17,14 @@ func notFoundPage(c *gin.Context) {
 }
 
 // HomePage : GET, "/"
+// https://startbootstrap.com/template/simple-sidebar
 func homePage(c *gin.Context) {
 	c.HTML(
 		http.StatusOK,
 		"views/index.html",
 		gin.H{
-			"key": config.Keys.Kakao.JS,
-		},
-	)
-}
-
-// HomePage : GET, "/"
-// https://startbootstrap.com/template/simple-sidebar
-func homePage2(c *gin.Context) {
-	c.HTML(
-		http.StatusOK,
-		"views/index2.html",
-		gin.H{
-			"key": config.Keys.Kakao.JS,
+			"title": "오점무",
+			"key":   config.Keys.Kakao.JS,
 		},
 	)
 }
@@ -45,8 +35,6 @@ func InitRoutes(r *gin.Engine) {
 
 	r.GET("/", homePage)
 	r.GET("/index.html", homePage)
-
-	r.GET("/index2.html", homePage2)
 
 	/* Redirect, for scraping-news-go */
 	r.GET("/maekyung", redirectMaeKyung)

@@ -14,7 +14,8 @@ func main() {
 	r.Static("/css", "./static/css")
 	r.Static("/js", "./static/js")
 	r.Static("/vendor", "./static/vendor")
-	r.StaticFile("/favicon.ico", "./static/favicon.ico")
+	r.Static("/assets", "./assets")
+	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
 
 	r.LoadHTMLGlob("templates/**/*")
 	// Initialize the routes
