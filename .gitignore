@@ -228,3 +228,5 @@ $RECYCLE.BIN/
 **/log/*
 
 nginx_conf.d
+
+startbootstrap-sb-admin-gh-pages
