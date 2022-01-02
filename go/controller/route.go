@@ -1,42 +1,58 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"ojeommu/config"
 
 	"github.com/gin-gonic/gin"
 )
 
+const TITLE_NAME = "오점무"
+
 // NotFoundPage : NoRoute
-func notFoundPage(c *gin.Context) {
+func NotFoundPage(c *gin.Context) {
 	c.HTML(
 		http.StatusNotFound,
 		"views/404.html",
-		gin.H{},
+		gin.H{"title": TITLE_NAME},
 	)
 }
 
 // HomePage : GET, "/"
 // https://startbootstrap.com/template/simple-sidebar
-func homePage(c *gin.Context) {
+func HomePage(c *gin.Context) {
 	c.HTML(
 		http.StatusOK,
 		"views/index.html",
 		gin.H{
-			"title": "오점무",
+			"title": TITLE_NAME,
 			"key":   config.Keys.Kakao.JS,
 		},
 	)
 }
 
+func SearchHandler(c *gin.Context) {
+	var jsonData SearchCond
+	if c.BindJSON(&jsonData) == nil {
+		fmt.Println(jsonData.Query + " " + jsonData.Code + " " + jsonData.X + " " +
+			jsonData.Y + " " + jsonData.Radius)
+	} else {
+		// handle error
+		fmt.Println("ERROR")
+	}
+}
+
 func InitRoutes(r *gin.Engine) {
 
-	r.NoRoute(notFoundPage)
+	r.NoRoute(NotFoundPage)
 
-	r.GET("/", homePage)
-	r.GET("/index.html", homePage)
+	r.GET("/", HomePage)
+	r.GET("/index.html", HomePage)
+
+	r.POST("/sendToGo", SearchHandler)
 
 	/* Redirect, for scraping-news-go */
-	r.GET("/maekyung", redirectMaeKyung)
-	r.GET("/hankyung", redirectHanKyung)
+	r.GET("/maekyung", RedirectMaeKyung)
+	r.GET("/hankyung", RedirectHanKyung)
 }
