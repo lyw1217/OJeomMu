@@ -28,17 +28,17 @@ func LoadKeysConfig() Keys_t {
 	path, _ := filepath.Abs(keyPath)
 	file, err := os.Open(path)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	defer file.Close()
 
 	decoder := json.NewDecoder(file)
 	err = decoder.Decode(&k)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
-	log.Print("< SCRAPER > Successful loading of Key Info ........")
+	log.Print("Successful loading of Key Info ........")
 
 	return k
 }
