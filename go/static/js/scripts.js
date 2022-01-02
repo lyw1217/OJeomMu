@@ -26,10 +26,10 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 
-/* GIN Ajax */
+/* GIN <-> Ajax */
 function sendToGo() {
     var rad = $('#radius').serializeArray();
-    var que = $('#query').serializeArray();
+    var cat = $('#category').serializeArray();
 
     loc = marker.getPosition();
 
@@ -37,18 +37,18 @@ function sendToGo() {
     //[{ name : "a", value : "1" }] to {"a":"1"}
     var params = {};
     params[rad[0]['name']] = rad[0]['value'];
-    params[que[0]['name']] = que[0]['value'];
-    params['x'] = String(loc.getLat());
-    params['y'] = String(loc.getLng());
+    params[cat[0]['name']] = cat[0]['value'];
+    params['x'] = String(loc.getLng());
+    params['y'] = String(loc.getLat());
     
-    alert(JSON.stringify(params));
-    //{"search":"1"}
     $.ajax({
-        type: 'post',
+        type: 'POST',
         url: '/sendToGo',
         data: JSON.stringify(params),
+        //dataType : 'json',
+        //contentType : "application/json; charset=UTF-8",
         error: function () {
-            //alert("에러발생");
+            alert("에러 발생");
         },
         success: function (json) {
             //alert(json)

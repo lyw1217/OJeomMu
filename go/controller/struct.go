@@ -1,6 +1,6 @@
 package controller
 
-const MAX_SEARCH_PAGE = 10
+const MAX_SEARCH_PAGE = 5
 
 /* KAKAO KEYWORD SEARCH */
 
@@ -94,7 +94,7 @@ type SearchCat_t struct {
 }
 
 /* SearchHandler */
-type SearchCond struct {
+type SearchCond_t struct {
 	Query  string `json:"query"`
 	Code   string `json:"code"`
 	X      string `json:"x"`

@@ -2,11 +2,12 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
-	"os"
+	"strconv"
 
 	"ojeommu/config"
 
@@ -14,7 +15,17 @@ import (
 )
 
 /* 카카오 키워드로 장소 검색하기 */
-func SearchKeyword(que string, code string, x string, y string, rad int) {
+func SearchKeyword(s SearchCond_t) []SearchKeyword_t {
+
+	que := "맛집"
+	code := "FD6" // 음식점
+	x := s.X
+	y := s.Y
+	rad, err := strconv.Atoi(s.Radius)
+	if err != nil {
+		rad = 100
+		log.Println("Error radius strconv atoi")
+	}
 
 	k := config.Keys.Kakao
 
@@ -25,28 +36,27 @@ func SearchKeyword(que string, code string, x string, y string, rad int) {
 		Y:                 y,
 		Radius:            rad,
 		Page:              1,
-		Size:              45,
+		Size:              15,
 		Sort:              "distance",
 	}
 
 	baseUrl, err := url.Parse(KakaoSearchKeywordUrl)
 	if err != nil {
 		log.Fatal("Malformed URL: ", err.Error())
-		return
+		return nil
 	}
 
 	vals, _ := query.Values(p)
 	// Add Query Parameters to the URL
-	baseUrl.RawQuery = vals.Encode() //params.Encode() // Escape Query Parameters
+	baseUrl.RawQuery = vals.Encode() // Escape Query Parameters
 
 	req, err := http.NewRequest("GET", baseUrl.String(), nil)
 	if err != nil {
-		log.Print(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	req.Header.Add("Authorization", "KakaoAK "+k.Rest)
 
-	// fmt.Printf("Encoded URL is %q\n", req.URL.String())
+	fmt.Printf("Encoded URL is %q\n", req.URL.String())
 
 	client := &http.Client{}
 	rsp, err := client.Do(req)
@@ -75,7 +85,7 @@ func SearchKeyword(que string, code string, x string, y string, rad int) {
 			baseUrl, err := url.Parse(KakaoSearchKeywordUrl)
 			if err != nil {
 				log.Fatal("Malformed URL: ", err.Error())
-				return
+				return nil
 			}
 
 			vals, _ := query.Values(p)
@@ -88,7 +98,7 @@ func SearchKeyword(que string, code string, x string, y string, rad int) {
 			}
 			req.Header.Add("Authorization", "KakaoAK "+k.Rest)
 
-			// fmt.Printf("Encoded URL is %q\n", req.URL.String())
+			fmt.Printf("Encoded URL is %q\n", req.URL.String())
 
 			client := &http.Client{}
 			rsp, err := client.Do(req)
@@ -111,4 +121,6 @@ func SearchKeyword(que string, code string, x string, y string, rad int) {
 			}
 		}
 	}
+
+	return data
 }

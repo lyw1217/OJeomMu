@@ -7,7 +7,7 @@ import (
 )
 
 // RedirectMaeKyung : GET, "/maekyung"
-func redirectMaeKyung(c *gin.Context) {
+func RedirectMaeKyung(c *gin.Context) {
 	c.Redirect(
 		http.StatusMovedPermanently,
 		MkMSGUrl,
@@ -15,7 +15,7 @@ func redirectMaeKyung(c *gin.Context) {
 }
 
 // RedirectHanKyung : GET, "/hankyung"
-func redirectHanKyung(c *gin.Context) {
+func RedirectHanKyung(c *gin.Context) {
 	c.Redirect(
 		http.StatusMovedPermanently,
 		HkIssueTodayUrl,

@@ -33,10 +33,9 @@ func HomePage(c *gin.Context) {
 }
 
 func SearchHandler(c *gin.Context) {
-	var jsonData SearchCond
+	var jsonData SearchCond_t
 	if c.BindJSON(&jsonData) == nil {
-		fmt.Println(jsonData.Query + " " + jsonData.Code + " " + jsonData.X + " " +
-			jsonData.Y + " " + jsonData.Radius)
+		fmt.Println(SearchKeyword(jsonData))
 	} else {
 		// handle error
 		fmt.Println("ERROR")
