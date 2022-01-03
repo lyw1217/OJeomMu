@@ -1,6 +1,7 @@
 package controller
 
-const MAX_SEARCH_PAGE = 5
+const MAX_SEARCH_PAGE = 10 // 최대 API 호출 횟수
+const MAX_SEARCH_DOC = 100 // 최대 매장 개수
 
 /* KAKAO KEYWORD SEARCH */
 
@@ -95,9 +96,8 @@ type SearchCat_t struct {
 
 /* SearchHandler */
 type SearchCond_t struct {
-	Query  string `json:"query"`
-	Code   string `json:"code"`
-	X      string `json:"x"`
-	Y      string `json:"y"`
-	Radius string `json:"radius"`
+	Category string `json:"category"`
+	X        string `json:"x"`
+	Y        string `json:"y"`
+	Radius   string `json:"radius"`
 }
