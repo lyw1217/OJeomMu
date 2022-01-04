@@ -43,15 +43,21 @@ function sendToGo() {
     
     $.ajax({
         type: 'POST',
+        contentType: "application/json; charset=utf-8",
         url: '/sendToGo',
         data: JSON.stringify(params),
         //dataType : 'json',
         //contentType : "application/json; charset=UTF-8",
         error: function () {
-            alert("에러 발생");
+            alert("조회 중 에러가 발생했습니다.");
         },
-        success: function (json) {
-            //alert(json)
+        success: function (resData) {
+            if (!$.trim(resData)) {
+                alert("주변에 음식점이 없습니다.")
+            } else {
+                alert(resData.NAME)
+            }
+            
         }
     });
 
