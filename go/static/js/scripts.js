@@ -30,7 +30,10 @@ window.addEventListener('DOMContentLoaded', event => {
 function sendToGo() {
     var rad = $('#radius').serializeArray();
     var cat = $('#category').serializeArray();
-
+    if (rad[0]['value'] == 0 || cat[0]['value'] == "none") {
+        return
+    }
+    
     loc = marker.getPosition();
 
     //json 가공
@@ -46,19 +49,83 @@ function sendToGo() {
         contentType: "application/json; charset=utf-8",
         url: '/sendToGo',
         data: JSON.stringify(params),
-        //dataType : 'json',
-        //contentType : "application/json; charset=UTF-8",
         error: function () {
-            alert("조회 중 에러가 발생했습니다.");
+            alert("조회 중 에러가 발생했어요..");
         },
         success: function (resData) {
             if (!$.trim(resData)) {
-                alert("주변에 음식점이 없습니다.")
+                alert("주변에 음식점이 없어요.", "", "error");
             } else {
-                alert(resData.NAME)
+                let msg = "";                
+                if (resData.DISTANCE != 0) {
+                    msg = msg + "거리 :\t " + resData.DISTANCE + " 미터\n";
+                }
+                if (resData.ROAD_ADDRESS) {
+                    msg = msg + "주소 :\t " + resData.ROAD_ADDRESS + "\n";
+                }
+                if (resData.URL) {
+                    msg = msg + "URL :\t " + resData.URL + "\n";
+                }
+                if (resData.PHONE) {
+                    msg = msg + "번호 :\t " + resData.PHONE;
+                }
+
+                resultAlert(resData.NAME, msg, resData.URL, "success");
             }
             
         }
     });
+}
 
+var alert = function(title, msg, icon) {
+    swal({
+        title : title,
+        text : msg,
+        icon : icon,
+        time : 1500,
+        showConfirmButton : false
+    });
+}
+
+var resultAlert = function(title, msg, url, icon) {
+    
+    swal({
+        title : title,
+        text : msg,
+        icon : icon,
+        buttons: {
+            cancel: "시러",
+            catch: {
+                text: "가자!",
+                value: "go",
+        }},
+        showConfirmButton : true
+    })
+    .then((value) => {
+        switch (value) {
+            case "go":
+                if (isValidHttpUrl(url)) {
+                    window.location.href=url;
+                } else {
+                    swal("URL이 올바르지 않아요.", {
+                        icon : "warning"
+                    })
+                }
+                break;
+            default:
+        }
+    });
+}
+
+// https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
+function isValidHttpUrl(string) {
+    let url;
+
+    try {
+        url = new URL(string);
+    } catch (_) {
+        return false;  
+    }
+
+    return url.protocol === "http:" || url.protocol === "https:";
 }

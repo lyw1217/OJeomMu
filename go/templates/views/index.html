@@ -163,7 +163,7 @@
                 </select>
               </div>
               <div>
-                <input type="button" class="btn btn-primary" onclick="sendToGo()" value="search" />
+                <input type="button" class="btn btn-primary" onclick="sendToGo()" value="오늘 점심 뭐 먹을까?" />
               </div>
             </form>
           </div>
@@ -191,6 +191,7 @@
   <script src="js/scripts.js"></script>
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ .key }}&libraries=services"></script>
   <script src="js/map.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
 {{ template "layouts/footer.html" .}}
