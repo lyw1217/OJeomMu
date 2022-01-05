@@ -38,12 +38,11 @@ func SearchHandler(c *gin.Context) {
 
 	var jsonData SearchCond_t
 	if c.BindJSON(&jsonData) == nil {
-		list, cond, err := SearchKeyword(jsonData)
+		matched_place, d, err := RectSearch(jsonData)
 		if err != nil {
-			log.Println(err)
+			log.Println("Error, failed RectSearch()")
 			return
 		}
-		matched_place := GetCondPlace(list, cond)
 		log.Println("matched_place =", matched_place)
 		if matched_place == nil {
 			log.Println("Error, failed GetCondPlace()")
@@ -58,9 +57,10 @@ func SearchHandler(c *gin.Context) {
 				"X":            matched_place.X,
 				"Y":            matched_place.Y,
 				"URL":          matched_place.PlaceUrl,
-				"DISTANCE":     matched_place.Distance,
+				"DISTANCE":     d,
 			})
 		}
+
 	} else {
 		// handle error
 		log.Println("Error, failed BindJSON()")

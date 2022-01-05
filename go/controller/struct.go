@@ -1,16 +1,14 @@
 package controller
 
 const MAX_SEARCH_PAGE = 10 // 최대 API 호출 횟수
-const MAX_SEARCH_DOC = 100 // 최대 매장 개수
+const MAX_SEARCH_DOC = 180 // 최대 매장 개수(45 * 4개 사분면)
 
 /* KAKAO KEYWORD SEARCH */
 
 type KeywordParam_t struct {
 	Query             string `url:"query"`
 	CategoryGroupCode string `url:"category_group_code"`
-	X                 string `url:"x"`
-	Y                 string `url:"y"`
-	Radius            int    `url:"radius"`
+	Rect              string `url:"rect"`
 	Page              int    `url:"page"`
 	Size              int    `url:"size"`
 	Sort              string `url:"sort"`
@@ -100,4 +98,16 @@ type SearchCond_t struct {
 	X        string `json:"x"`
 	Y        string `json:"y"`
 	Radius   string `json:"radius"`
+}
+
+type Coord_t struct {
+	Lat float64
+	Lng float64
+}
+
+type RectCoord_t struct {
+	N Coord_t // north
+	S Coord_t // south
+	W Coord_t // west
+	E Coord_t // east
 }
