@@ -2,7 +2,7 @@
 
 var mapContainer = document.getElementById("map"), // 지도를 표시할 div
   mapOption = {
-    center: new kakao.maps.LatLng(37.48737, 127.16033), // 지도의 중심좌표
+    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
     level: 2, // 지도의 확대 레벨
     mapTypeId: kakao.maps.MapTypeId.ROADMAP, // 지도종류
   };
@@ -15,6 +15,10 @@ var geocoder = new kakao.maps.services.Geocoder();
 
 // 마커 생성
 var marker = new kakao.maps.Marker();
+// 디폴트 마커 생성
+var latlng = new kakao.maps.LatLng(33.450701, 126.570667);
+marker.setPosition(latlng);
+marker.setMap(map);
 // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
 var mapTypeControl = new kakao.maps.MapTypeControl();
 
