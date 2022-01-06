@@ -31,6 +31,7 @@ function sendToGo() {
     var rad = $('#radius').serializeArray();
     var cat = $('#category').serializeArray();
     if (rad[0]['value'] == 0 || cat[0]['value'] == "none") {
+        alert("반경과 카테고리를 선택해주세요.", "", "info")
         return
     }
     
