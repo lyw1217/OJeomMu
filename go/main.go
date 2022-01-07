@@ -1,18 +1,15 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"log"
-	"net/http"
+	"ojeommu/config"
 	"ojeommu/controller"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
-	_ "github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
+	"github.com/unrolled/secure"
 )
 
 func ServeStaticFiles(r *gin.Engine) {
@@ -25,43 +22,41 @@ func ServeStaticFiles(r *gin.Engine) {
 }
 
 func main() {
-	r := gin.Default()
-	ServeStaticFiles(r)
-	// Initialize the routes
-	controller.InitRoutes(r)
+	secureFunc := func() gin.HandlerFunc {
+		return func(c *gin.Context) {
+			secureMiddleware := secure.New(secure.Options{
+				SSLRedirect: true,
+				SSLHost:     "mumeog.site:443",
+			})
+			err := secureMiddleware.Process(c.Writer, c.Request)
 
-	/* https://github.com/gin-gonic/gin#graceful-shutdown-or-restart */
-	srv := &http.Server{
-		Addr:    ":8090",
-		Handler: r,
-	}
+			// If there was an error, do not continue.
+			if err != nil {
+				return
+			}
 
-	// Initializing the server in a goroutine so that
-	// it won't block the graceful shutdown handling below
-	go func() {
-		if err := srv.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
-			log.Printf("listen: %s\n", err)
+			c.Next()
 		}
 	}()
 
-	// Wait for interrupt signal to gracefully shutdown the server with
-	// a timeout of 5 seconds.
+	routeHttp := gin.Default()
+	routeHttp.Use(secureFunc)
+	routeHttps := gin.Default()
+	ServeStaticFiles(routeHttps)
+	// Initialize the routes
+	controller.InitRoutes(routeHttps)
+
+	// HTTP
+	go routeHttp.Run(":80")
+	// HTTPS
+	routeHttps.RunTLS(":8443", config.ServerCrt, config.ServerKey)
+
 	quit := make(chan os.Signal, 1)
-	// kill (no param) default send syscall.SIGTERM
+	// kill (no param) default send syscanll.SIGTERM
 	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall.SIGKILL but can't be caught, so don't need to add it
+	// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Println("Shutting down server...")
+	log.Println("Shutdown Server ...")
 
-	// The context is used to inform the server it has 5 seconds to finish
-	// the request it is currently handling
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("Server forced to shutdown:", err)
-	}
-
-	log.Println("Server exiting")
 }

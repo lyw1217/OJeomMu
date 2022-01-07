@@ -3,9 +3,9 @@ module ojeommu
 go 1.17
 
 require (
-	github.com/gin-gonic/autotls v0.0.3
 	github.com/gin-gonic/gin v1.7.7
 	github.com/google/go-querystring v1.1.0
+	github.com/unrolled/secure v1.0.9
 )
 
 require (
@@ -21,8 +21,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
-	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3 // indirect
 	golang.org/x/sys v0.0.0-20200116001909-b77594299b42 // indirect
-	golang.org/x/text v0.3.2 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
