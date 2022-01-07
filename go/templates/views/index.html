@@ -47,153 +47,104 @@
     display: flex;
     margin-bottom: 1rem;
   }
+
+  .radius_border {
+    border: 1px #9f9f9f;
+    border-radius: 5px;
+  }
+
+  .custom_gps {
+    position: absolute;
+    top: 75px;
+    left: 15px;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #ffffff;
+  }
+
+  .custom_gps span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    margin: 2px auto;
+    cursor: pointer;
+  }
+
+  .custom_gps span img {
+    width: 20px;
+    height: 20px;
+    border: none;
+  }
 </style>
 <!-- https://startbootstrap.com/template/sb-admin -->
 
-<body class="sb-nav-fixed">
-  <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">오점무</a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
-      <i class="fas fa-bars"></i>
-    </button>
-    <!-- Navbar Search-->
-    <form class="
-        d-none d-md-inline-block
-        form-inline
-        ms-auto
-        me-0 me-md-3
-        my-2 my-md-0
-      ">
-      <!--
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
-            -->
-    </form>
-    <!-- Navbar-->
-    <!--
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-          aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="#!">Settings</a></li>
-          <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
-          <li><a class="dropdown-item" href="#!">Logout</a></li>
-        </ul>
-      </li>
-    </ul>
-  -->
-  </nav>
-  <div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-      <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-        <div class="sb-sidenav-menu">
-          <div class="nav">
-            <div class="sb-sidenav-menu-heading">OJM</div>
-            <a class="nav-link" href="index.html">
-              <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
-              </div>
-              오점무
-            </a>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div id="layoutSidenav_content">
-      <main>
-        <div class="container-fluid px-4">
-          <h1 class="mt-4">오늘 점심 뭐 먹을까?</h1>
-          <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">점심 나가서 먹을 것 같애</li>
-          </ol>
-          <div class="row">
-            <div class="col-12">
-              <button type="button" style="margin-bottom: 1rem" class="btn btn-primary" onclick="getCurrentPosBtn()">
-                내 위치 가져오기
-              </button>
-            </div>
-            <div class="map_wrap">
-              <div id="map" style="
+{{ template "layouts/nav.html" .}}
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">오늘 무먹?</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item active">점심 나가서 먹을 것 같애</li>
+    </ol>
+    <div class="row">
+      <div class="map_wrap">
+        <div id="map" style="
                   width: 100%;
                   height: 100%;
                   position: relative;
                   overflow: hidden;
                 "></div>
-              <div class="hAddr">
-                <span class="map_title">주소정보</span>
-                <span id="currAddr"></span>
-              </div>
-            </div>
-            <form method="GET" class="form">
-              <div>
-                <select name="radius" id="radius" class="form-select">
-                  <option value="0">반경</option>
-                  <option value="0.1">100m</option>
-                  <option value="0.2">200m</option>
-                  <option value="0.3">300m</option>
-                  <option value="0.5">500m</option>
-                  <option value="1.0">1km</option>
-                  <option value="2.0">2km</option>
-                  <option value="3.0">3km</option>
-                  <option value="5.0">5km</option>
-                </select>
-              </div>
-              <div>
-                <select name="category" id="category" class="form-select">
-                  <option value="none">카테고리</option>
-                  <option value="anything">아무거나</option>
-                  <option value="korea">한식</option>
-                  <option value="china">중식</option>
-                  <option value="japan">일식</option>
-                  <option value="western">양식</option>
-                  <option value="flour">분식</option>
-                  <option value="asia">아시아음식</option>
-                  <option value="lunchbox">도시락</option>
-                  <option value="meat">육류,고기</option>
-                  <option value="chicken">치킨</option>
-                  <option value="fastfood">패스트푸드</option>
-                  <option value="bar">술집</option>
-                </select>
-              </div>
-              <div>
-                <input type="button" class="btn btn-primary" onclick="sendToGo()" value="오늘 점심 뭐 먹을까?" />
-              </div>
-            </form>
-          </div>
+        <div class="hAddr">
+          <span class="map_title">주소정보</span>
+          <span id="currAddr"></span>
         </div>
-      </main>
-      <footer class="py-4 bg-light mt-auto">
-        <div class="container-fluid px-4">
-          <div class="d-flex align-items-center justify-content-between small">
-            <div class="text-muted">Copyright &copy; OJM 2021</div>
-            <div>
-              <!--
-              <a href="#">Privacy Policy</a>
-              &middot;
-              <a href="#">Terms &amp; Conditions</a>
-              -->
-            </div>
-          </div>
+        <div class="custom_gps radius_border">
+          <span onclick="getCurrentPosBtn()"><img src="/assets/img/location.png" alt="GPS"></span>
         </div>
-      </footer>
+      </div>
+      <form method="GET" class="form">
+        <div class="selection">
+          <select name="radius" id="radius" class="form-select">
+            <option value="0">반경</option>
+            <option value="0.1">100m</option>
+            <option value="0.2">200m</option>
+            <option value="0.3">300m</option>
+            <option value="0.5">500m</option>
+            <option value="1.0">1km</option>
+            <option value="2.0">2km</option>
+            <option value="3.0">3km</option>
+            <option value="5.0">5km</option>
+          </select>
+        </div>
+        <div class="selection">
+          <select name="category" id="category" class="form-select">
+            <option value="none">카테고리</option>
+            <option value="anything">아무거나</option>
+            <option value="korea">한식</option>
+            <option value="china">중식</option>
+            <option value="japan">일식</option>
+            <option value="western">양식</option>
+            <option value="flour">분식</option>
+            <option value="asia">아시아음식</option>
+            <option value="lunchbox">도시락</option>
+            <option value="meat">육류,고기</option>
+            <option value="chicken">치킨</option>
+            <option value="fastfood">패스트푸드</option>
+            <option value="bar">술집</option>
+          </select>
+        </div>
+        <div class="selection">
+          <input type="button" class="btn btn-primary" onclick="sendToGo()" value="오늘 뭐 먹을까?" />
+        </div>
+      </form>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="js/scripts.js"></script>
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ .key }}&libraries=services"></script>
-  <script src="js/map.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-</body>
+</main>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ .key }}&libraries=services"></script>
+<script src="js/map.js"></script>
 
 {{ template "layouts/footer.html" .}}
 {{ end }}
