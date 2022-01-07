@@ -1,0 +1,26 @@
+<!--info.html-->
+
+{{ define "views/info.html"}}
+{{ template "layouts/header.html" .}}
+
+<!-- https://startbootstrap.com/template/sb-admin -->
+
+{{ template "layouts/nav.html" .}}
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">오늘 무먹?</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item active">밥 뭐먹지..</li>
+    </ol>
+    <div class="row">
+      <div class="col-12">
+        <p>현재 위치(지도 상 마커)를 기준으로 상하좌우 반경(m) 길이만큼의 정사각형 모양 4개 구역에서 음식점을 검색함</p>
+        <p>한 구역당 최대 45개, 전체 구역에서 최대 180개의 음식점을 검색하고 그 중 카테고리와 일치하는 음식점을 랜덤하게 하나 골라줌</p>
+        <p>거리는 현재 위치와 음식점 사이의 대략적인 직선 거리</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+{{ template "layouts/footer.html" .}}
+{{ end }}
