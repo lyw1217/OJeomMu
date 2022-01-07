@@ -26,7 +26,7 @@ func main() {
 		return func(c *gin.Context) {
 			secureMiddleware := secure.New(secure.Options{
 				SSLRedirect: true,
-				SSLHost:     "mumeog.site:443",
+				SSLHost:     "mumeog.site",
 			})
 			err := secureMiddleware.Process(c.Writer, c.Request)
 
@@ -41,15 +41,14 @@ func main() {
 
 	routeHttp := gin.Default()
 	routeHttp.Use(secureFunc)
-	routeHttps := gin.Default()
-	ServeStaticFiles(routeHttps)
+	ServeStaticFiles(routeHttp)
 	// Initialize the routes
-	controller.InitRoutes(routeHttps)
+	controller.InitRoutes(routeHttp)
 
 	// HTTP
 	go routeHttp.Run(":80")
 	// HTTPS
-	routeHttps.RunTLS(":8443", config.ServerCrt, config.ServerKey)
+	routeHttp.RunTLS(":8443", config.ServerCrt, config.ServerKey)
 
 	quit := make(chan os.Signal, 1)
 	// kill (no param) default send syscanll.SIGTERM
