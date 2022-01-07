@@ -90,7 +90,7 @@ start_app()
 	echo ""
 	echo " > 서버 실행"
 	echo ""
-	nohup ./${CMD} > ${LOG_PATH}/${LOG_NAME} 2>&1 &
+	nohup ./${CMD} >> ${LOG_PATH}/${LOG_NAME} 2>&1 &
 	sleep 3
 
 	for cnt in {1..${WAIT_TIME}}
