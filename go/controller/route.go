@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const TITLE_NAME = "오점무"
+const TITLE_NAME = "오늘 무먹?"
 
 // NotFoundPage : NoRoute
 func NotFoundPage(c *gin.Context) {
@@ -30,6 +30,18 @@ func HomePage(c *gin.Context) {
 		gin.H{
 			"title": TITLE_NAME,
 			"key":   config.Keys.Kakao.JS,
+		},
+	)
+}
+
+// InfoPage : GET, "/"
+func InfoPage(c *gin.Context) {
+
+	c.HTML(
+		http.StatusOK,
+		"views/info.html",
+		gin.H{
+			"title": TITLE_NAME,
 		},
 	)
 }
@@ -74,6 +86,7 @@ func InitRoutes(r *gin.Engine) {
 
 	r.GET("/", HomePage)
 	r.GET("/index.html", HomePage)
+	r.GET("/info.html", InfoPage)
 
 	r.POST("/sendToGo", SearchHandler)
 
