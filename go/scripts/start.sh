@@ -6,6 +6,7 @@ CMD_GO="/usr/bin/go"
 LOG_PATH="${DIR_PATH}/log"
 LOG_NAME="nohup.log"
 CMD="ojeommu"
+EXE="${DIR_PATH}/${CMD}"
 
 export GIN_MODE=$1
 export GOBIN=$DIR_PATH
@@ -86,6 +87,20 @@ start_app()
 	echo ""
 	echo " > go mod tidy"
 	${CMD_GO} mod tidy
+
+	echo ""
+	echo " > 패키지 생성"
+	${CMD_GO} install
+
+	echo ""
+	if [ ! -f ${EXE} ];then
+		echo "   패키지 생성 실패.."
+		echo ""
+		exit 1
+	fi
+	echo "   패키지 생성 완료!"
+	echo "   - path : ${EXE}"
+	echo ""
 
 	echo ""
 	echo " > 서버 실행"
