@@ -57,18 +57,23 @@ function sendToGo() {
             if (!$.trim(resData)) {
                 alert("주변에 음식점이 없어요.", "", "error");
             } else {
-                let msg = "";                
+                let msg = "";               
+                if (resData.CAT_NAME) {
+                    msg = msg + "카테고리\t: " + resData.CAT_NAME + "\n";
+                } 
                 if (resData.DISTANCE != 0) {
-                    msg = msg + "거리 :\t " + resData.DISTANCE + " 미터\n";
+                    msg = msg + "거리\t: " + resData.DISTANCE + " 미터\n";
                 }
                 if (resData.ROAD_ADDRESS) {
-                    msg = msg + "주소 :\t " + resData.ROAD_ADDRESS + "\n";
+                    msg = msg + "주소\t: " + resData.ROAD_ADDRESS + "\n";
                 }
+                /*
                 if (resData.URL) {
-                    msg = msg + "URL :\t " + resData.URL + "\n";
+                    msg = msg + "URL\t: " + resData.URL + "\n";
                 }
+                */
                 if (resData.PHONE) {
-                    msg = msg + "번호 :\t " + resData.PHONE;
+                    msg = msg + "전화번호\t: " + resData.PHONE;
                 }
 
                 resultAlert(resData.NAME, msg, resData.URL, "success");

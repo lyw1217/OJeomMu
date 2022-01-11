@@ -63,6 +63,7 @@ func SearchHandler(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"ID":           matched_place.Id,
 				"NAME":         matched_place.PlaceName,
+				"CAT_NAME":     matched_place.CategoryName,
 				"PHONE":        matched_place.Phone,
 				"ADDRESS":      matched_place.AddressName,
 				"ROAD_ADDRESS": matched_place.RoadAddressName,
