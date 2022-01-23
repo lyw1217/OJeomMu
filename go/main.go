@@ -51,11 +51,17 @@ func main() {
 	routeHttp.RunTLS(":8443", config.ServerCrt, config.ServerKey)
 
 	quit := make(chan os.Signal, 1)
+	done := make(chan bool, 1)
 	// kill (no param) default send syscanll.SIGTERM
 	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
+	// kill -9 is syscall. SIGKILL but can't be catch, so don't need add it
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	log.Println("Shutdown Server ...")
 
+	go func() {
+		sig := <-quit
+		log.Println("RECEIVE SIG : ", sig)
+		done <- true
+	}()
+	<-done
+	log.Println("Shutdown Server ...")
 }
