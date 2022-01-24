@@ -50,7 +50,7 @@ func SearchHandler(c *gin.Context) {
 
 	var jsonData SearchCond_t
 	if c.BindJSON(&jsonData) == nil {
-		matched_place, d, err := RectSearch(jsonData)
+		matched_place, d, total_nums, err := RectSearch(jsonData)
 		if err != nil {
 			log.Println("Error, failed RectSearch()")
 			return
@@ -71,6 +71,7 @@ func SearchHandler(c *gin.Context) {
 				"Y":            matched_place.Y,
 				"URL":          matched_place.PlaceUrl,
 				"DISTANCE":     d,
+				"TOTAL_NUMS":   total_nums,
 			})
 		}
 
