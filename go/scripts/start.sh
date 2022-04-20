@@ -1,8 +1,8 @@
 #!/bin/bash
 
 APP="OJeomMu"
-DIR_PATH="${HOME}/Documents/github/${APP}/go"
-CMD_GO="/usr/bin/go"
+DIR_PATH="/home/ubuntu/Documents/github/${APP}/go"
+CMD_GO="/usr/local/go/bin/go"
 LOG_PATH="${DIR_PATH}/log"
 LOG_NAME="nohup.log"
 CMD="ojeommu"

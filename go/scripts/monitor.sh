@@ -1,8 +1,8 @@
 #!/bin/bash
 
 APP="OJeomMu"
-DIR_PATH="${HOME}/Documents/github/${APP}/go"
-CMD_GO="/usr/bin/go"
+DIR_PATH="/home/ubuntu/Documents/github/${APP}/go"
+CMD_GO="/usr/local/go/bin/go"
 CMD="ojeommu"
 
 # sudo check
