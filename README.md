@@ -2,14 +2,14 @@
 
 오늘 점심 뭐먹을지 골라볼까
 
-## 개발 환경
+## 1. 개발 환경
 
 - CentOS Linux release 7.9.2009 (Core)
 - go version go1.17.3 linux/amd64
   - github.com/gin-gonic/gin v1.7.7
   - github.com/google/go-querystring v1.1.0
     
-## Let's Encrypt(Certbot) 설치 및 인증서 발급
+## 2. Let's Encrypt(Certbot) 설치 및 인증서 발급
 
 ### 1. [Certbot 설치](https://certbot.eff.org/instructions)
 ### 2. SSL 인증서 발급 및 설정
@@ -20,7 +20,40 @@
 
         $ sudo certbot renew --dry-run
 
-## 기능 설명
+## 3. 스크립트
+
+### - `monitor.sh`
+
+서버 기동 확인 및 기동
+
+- 현재 구동중인 애플리케이션 확인
+  - 정상 실행 중이라면 스크립트 종료
+  - 구동중인 애플리케이션이 없으면 애플리케이션 재구동
+
+### - `start.sh`
+
+서버 시작
+
+- git pull
+- go 패키지 생성
+- 현재 구동중인 애플리케이션 확인
+  - 실행 중인 애플리케이션이 있다면 종료
+- 생성한 패키지 실행
+
+### - `stop.sh`
+
+서버 중단
+
+- 현재 구동중인 애플리케이션 확인
+  - 실행 중인 애플리케이션이 있다면 종료
+
+### - `renew.sh`
+
+인증서 갱신
+
+- SSL 인증서 갱신
+
+## 4. 기능 설명
 
 오늘 점심 뭐먹을지 골라주는 웹페이지
 
