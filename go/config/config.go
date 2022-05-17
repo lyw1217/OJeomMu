@@ -9,8 +9,8 @@ import (
 
 const (
 	keyPath   string = "./config/keys.json"
-	ServerCrt string = "/etc/letsencrypt/live/www.mumeog.site/fullchain.pem"
-	ServerKey string = "/etc/letsencrypt/live/www.mumeog.site/privkey.pem"
+	ServerCrt string = "/etc/letsencrypt/live/mumeog.site/fullchain.pem"
+	ServerKey string = "/etc/letsencrypt/live/mumeog.site/privkey.pem"
 )
 
 type Kakao_t struct {
