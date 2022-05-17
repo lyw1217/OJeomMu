@@ -138,7 +138,7 @@ echo " --------------------------------------"
 echo "           [ OJeomMu  R U N ]          "
 echo "                              ${1}"
 echo " --------------------------------------"
-echo ""
+echo " DATE : `date`"
 check_dir
 
 start_app

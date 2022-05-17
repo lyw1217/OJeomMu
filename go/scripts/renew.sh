@@ -8,6 +8,8 @@ if [ $(id -u) -ne 0 ]; then exec sudo bash "$0" "$@"; exit; fi
 
 ${DIR_PATH}/scripts/stop.sh
 
+echo "certbot renew"
+
 /usr/bin/certbot renew
 
 ${DIR_PATH}/scripts/monitor.sh debug

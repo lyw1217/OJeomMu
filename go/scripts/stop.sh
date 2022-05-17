@@ -16,7 +16,7 @@ echo " --------------------------------------"
 echo "           [ OJeomMu   STOP ]          "
 echo "                                 go/gin"
 echo " --------------------------------------"
-echo ""
+echo " DATE : `date`"
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 echo ""
