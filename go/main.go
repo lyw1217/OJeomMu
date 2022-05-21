@@ -18,6 +18,7 @@ func ServeStaticFiles(r *gin.Engine) {
 	r.Static("/vendor", "./static/vendor")
 	r.Static("/assets", "./assets")
 	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
+	r.StaticFile("/robots.txt", "./static/robots.txt")
 	r.LoadHTMLGlob("templates/**/*")
 }
 
