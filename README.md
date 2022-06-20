@@ -2,6 +2,8 @@
 
 오늘 점심 뭐 먹을지 골라볼까
 
+Domain : https://mumeog.site/
+
 ## 1. 개발 환경
 
 - CentOS Linux release 7.9.2009 (Core)
@@ -23,20 +25,33 @@
 
 배달 가능 여부, 영업 시간 확인 기능 추가 예정
 
+### 2.1. 메인 페이지
+
+![main pages](go/assets/img/main_page.jpg)
+
+### 2.2. 설명 페이지
+
+![info pages](go/assets/img/info_page.jpg)
+
+### 2.3. 검색 결과 화면
+
+![result alert](go/assets/img/result_alert.jpg)
+
+
 ## 3. Let's Encrypt(Certbot) 설치 및 인증서 발급
 
-### 1. [Certbot 설치](https://certbot.eff.org/instructions)
-### 2. SSL 인증서 발급 및 설정
+### 3.1. [Certbot 설치](https://certbot.eff.org/instructions)
+### 3.2. SSL 인증서 발급 및 설정
     
         $ sudo certbot certonly --standalone -d {domain}
 
-### 3. 인증서 갱신 테스트
+### 3.3. 인증서 갱신 테스트
 
         $ sudo certbot renew --dry-run
 
 ## 4. 스크립트
 
-### - `monitor.sh`
+### 4.1. `monitor.sh`
 
 서버 기동 확인 및 기동
 
@@ -44,7 +59,7 @@
   - 정상 실행 중이라면 스크립트 종료
   - 구동 중인 애플리케이션이 없으면 애플리케이션 재구동
 
-### - `start.sh`
+### 4.2. `start.sh`
 
 서버 시작
 
@@ -55,7 +70,7 @@
         - 실행 중인 애플리케이션이 있다면 종료
     4. 생성한 패키지 실행
 
-### - `stop.sh`
+### 4.3. `stop.sh`
 
 서버 중단
 
