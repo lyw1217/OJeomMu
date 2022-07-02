@@ -165,3 +165,15 @@ function getCurrentPosBtn() {
     locationLoadError
   );
 }
+
+function setStorePosition(lat, lng) {
+
+  var latlng = new kakao.maps.LatLng(lat, lng);
+  
+  map.panTo(latlng);
+
+  marker.setPosition(latlng);
+  // 기존에 마커가 있다면 제거
+  marker.setMap(null);
+  marker.setMap(map);
+}

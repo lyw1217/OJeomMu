@@ -75,6 +75,9 @@ function sendToGo() {
                 if (resData.PHONE) {
                     msg = msg + "전화번호\t: " + resData.PHONE;
                 }
+                
+                // 검색된 음식점의 좌표로 마커 및 지도 이동
+                setStorePosition(resData.Y, resData.X);
 
                 resultAlert(resData.NAME, msg, resData.URL, "success");
             }
