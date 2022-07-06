@@ -15,7 +15,6 @@ import (
 func ServeStaticFiles(r *gin.Engine) {
 	r.Static("/css", "./static/css")
 	r.Static("/js", "./static/js")
-	r.Static("/vendor", "./static/vendor")
 	r.Static("/assets", "./assets")
 	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
 	r.StaticFile("/robots.txt", "./static/robots.txt")
