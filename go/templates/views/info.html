@@ -8,20 +8,26 @@
 {{ template "layouts/nav.html" .}}
 <main>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">오늘 무먹?</h1>
+    <h1 class="mt-4">무먹이 뭐에요?</h1>
     <ol class="breadcrumb mb-4">
-      <li class="breadcrumb-item active">밥 뭐먹지..</li>
+      <li class="breadcrumb-item active">배고파..</li>
     </ol>
     <div class="row">
       <div class="col-12">
-        <p>현재 위치(지도 상 마커) 기준 동서남북으로 거리(m)만큼을 한 변으로 하는 4개의 정사각형 구역에서 음식점을 검색합니다. (사분면, 현재 위치가 (0,0))</p>
-        <p>한 구역당 최대 45개, 전체 구역에서 최대 180개의 음식점을 검색하고 그 중 카테고리와 일치하는 음식점을 랜덤하게 하나 골라줍니다.</p>
-        <p>지도의 GPS 버튼을 누르면 현재 위치를 다시 가져올 수 있습니다.</p>
-        <p>결과에 나오는 거리는 현재 위치와 음식점 사이의 대략적인 직선 거리를 의미합니다.</p>
-        <p>배달 가능 여부, 영업 시간 확인 기능 추가 예정</p>
+        <p class="mt-4">거리 안에 있는 음식점들 중 하나를 무작위로 골라줘요!</p><br>
       </div>
-      <p></p>
-      <a style="text-decoration:none" class="link-secondary" href="index.html">무먹하러 가자</a></ol>
+      <div class="col-12">
+        <p class="mt-4">좀 더 자세하게는</p>
+        <p class="mt-4">현재 위치(지도 상 마커) 기준 동서남북으로 거리(미터)만큼을 한 변으로 하는 4개의 정사각형 구역에서 음식점을 검색해요. (사분면, 현재 위치가 (0,0))</p>
+        <p class="mt-4">한 구역 당 최대 45개, 전체 구역에서 최대 180개의 음식점을 검색하고 그중 카테고리와 일치하는 음식점을 랜덤하게 하나 골라줘요.</p>
+        <p class="mt-4">지도의 GPS 버튼을 누르면 현재 위치를 다시 가져올 수 있어요.</p>
+        <p class="mt-4">결과에 나오는 거리는 현재 위치와 음식점 사이의 대략적인 직선거리를 의미해요.</p>
+        <p class="mt-4">배달 가능 여부, 영업시간 확인 기능 추가 예정?</p>
+      </div>
+      <div class="col-12">
+        <p></p>
+        <a style="text-decoration:none; color: midnightblue;" class="link-secondary" href="index.html">그럼 오늘 밥 뭐 먹지?</a></ol>
+      </div>
     </div>
   </div>
 </main>
