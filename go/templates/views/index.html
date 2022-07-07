@@ -74,8 +74,8 @@
   }
 
   .custom_gps span img {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border: none;
   }
 </style>
@@ -90,6 +90,14 @@
     </ol>
     <ol class="breadcrumb mb-4"><a style="text-decoration:none" class="link-secondary" href="info.html">무먹이 뭐에요?</a></ol>
     <div class="row">
+     <!--
+      <div class="selection">
+        <label>
+         <input type="checkbox" name="homereturn" id="homereturn" value="true" checked>
+          원래 위치로 돌아가기
+        </label>
+     </div>
+     -->
       <div class="map_wrap">
         <div id="map" style="
                   width: 100%;
@@ -102,7 +110,9 @@
           <span id="currAddr"></span>
         </div>
         <div class="custom_gps radius_border">
-          <span onclick="getCurrentPosBtn()"><img src="/assets/img/location.png" alt="GPS"></span>
+          <span onclick="getCurrentPosBtn()">
+            <img src="/assets/img/gps.png" alt="GPS" onmouseover="this.src='/assets/img/gps_hover.png';" onmouseout="this.src='/assets/img/gps.png';">
+          </span>
         </div>
       </div>
       <form method="GET" class="form">
