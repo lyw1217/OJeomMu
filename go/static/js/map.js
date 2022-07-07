@@ -166,7 +166,7 @@ function getCurrentPosBtn() {
   );
 }
 
-function setStorePosition(lat, lng) {
+function setMarkerPosition(lat, lng) {
 
   var latlng = new kakao.maps.LatLng(lat, lng);
   

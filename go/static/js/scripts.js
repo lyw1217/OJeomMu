@@ -34,7 +34,8 @@ function sendToGo() {
         alert("반경과 카테고리를 선택해주세요.", "", "info")
         return
     }
-    
+    //var homereturn = $('#homereturn').is(":checked")
+
     loc = marker.getPosition();
 
     //json 가공
@@ -77,11 +78,11 @@ function sendToGo() {
                 }
                 
                 // 검색된 음식점의 좌표로 마커 및 지도 이동
-                setStorePosition(resData.Y, resData.X);
+                setMarkerPosition(resData.Y, resData.X);
 
-                resultAlert(resData.NAME, msg, resData.URL, "success");
+                //resultAlert(resData.NAME, msg, resData.URL, "success", homereturn, params['x'], params['y'] );
+                resultAlert(resData.NAME, msg, resData.URL, "success" );
             }
-            
         }
     });
 }
@@ -96,6 +97,7 @@ var alert = function(title, msg, icon) {
     });
 }
 
+//var resultAlert = function(title, msg, url, icon, hm, x, y) {
 var resultAlert = function(title, msg, url, icon) {
     
     swal({
@@ -103,7 +105,7 @@ var resultAlert = function(title, msg, url, icon) {
         text : msg,
         icon : icon,
         buttons: {
-            cancel: "시러",
+            cancel: "시러", 
             catch: {
                 text: "가자!",
                 value: "go",
@@ -122,6 +124,12 @@ var resultAlert = function(title, msg, url, icon) {
                 }
                 break;
             default:
+                /*
+                if ( hm ) {
+                    // 원위치 복귀
+                    setMarkerPosition(y, x);
+                }
+                */
         }
     });
 }
