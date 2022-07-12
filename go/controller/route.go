@@ -46,6 +46,19 @@ func InfoPage(c *gin.Context) {
 	)
 }
 
+
+// TestPage : GET, "/"
+func TestPage(c *gin.Context) {
+
+	c.HTML(
+		http.StatusOK,
+		"views/test.html",
+		gin.H{
+			"title": TITLE_NAME,
+		},
+	)
+}
+
 func SearchHandler(c *gin.Context) {
 
 	var jsonData SearchCond_t
@@ -89,6 +102,7 @@ func InitRoutes(r *gin.Engine) {
 	r.GET("/", HomePage)
 	r.GET("/index.html", HomePage)
 	r.GET("/info.html", InfoPage)
+	r.GET("/test.html" , TestPage)
 
 	r.POST("/sendToGo", SearchHandler)
 
