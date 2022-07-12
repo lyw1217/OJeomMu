@@ -109,4 +109,5 @@ func InitRoutes(r *gin.Engine) {
 	/* Redirect, for scraping-news-go */
 	r.GET("/maekyung", RedirectMaeKyung)
 	r.GET("/hankyung", RedirectHanKyung)
+	r.GET("/quicknews", RedirectQuickNews)
 }
