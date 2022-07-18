@@ -21,3 +21,11 @@ func RedirectHanKyung(c *gin.Context) {
 		HkIssueTodayUrl,
 	)
 }
+
+// RedirectQuickNews : GET, "/quicknews"
+func RedirectQuickNews(c *gin.Context) {
+	c.Redirect(
+		http.StatusMovedPermanently,
+		QuicknewsUrl,
+	)
+}
