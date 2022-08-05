@@ -114,7 +114,7 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 				break
 			}
 
-			time.Sleep(time.Millisecond * 10)
+			time.Sleep(time.Millisecond * 1)
 		}
 	}
 
@@ -130,18 +130,18 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 }
 
 /* d km 크기의 사분면 4개에서 데이터 조회 */
-func RectSearch(cond SearchCond_t) (*KeywordDocuments_t, int, int, error) {
+func RectSearch(cond SearchCond_t) (*KeywordDocuments_t, int, error) {
 	// X = longitude, Y = latitude
 	// 1. 기준점으로부터 d Km 떨어진 Rect 좌표 가져오기(N,S,W,E)
 	lng, err := strconv.ParseFloat(cond.X, 64)
 	if err != nil {
 		log.Println("Error longitude strconv ParseFloat(lng =", cond.X, ")")
-		return nil, 0, 0, err
+		return nil, 0, err
 	}
 	lat, err := strconv.ParseFloat(cond.Y, 64)
 	if err != nil {
 		log.Println("Error latitude strconv ParseFloat(lat =", cond.Y, ")")
-		return nil, 0, 0, err
+		return nil, 0, err
 	}
 
 	d, err := strconv.ParseFloat(cond.Radius, 64)
@@ -191,9 +191,9 @@ func RectSearch(cond SearchCond_t) (*KeywordDocuments_t, int, int, error) {
 
 		time.Sleep(time.Millisecond * 10)
 	}
-	result, distance, total_nums := GetCondPlace(list, cond)
+	result, total_nums := GetCondPlace(list, cond)
 
-	return result, distance, total_nums, nil
+	return result, total_nums, nil
 }
 
 /* ajax<->gin 카테고리 파싱 */
@@ -230,7 +230,7 @@ func parseCategory(c string) string {
 }
 
 /* 조건에 맞는 음식점 랜덤으로 하나 고르기 */
-func GetCondPlace(list [][]KeywordDocuments_t, cond SearchCond_t) (*KeywordDocuments_t, int, int) {
+func GetCondPlace(list [][]KeywordDocuments_t, cond SearchCond_t) (*KeywordDocuments_t, int) {
 
 	category := parseCategory(cond.Category)
 
@@ -254,15 +254,12 @@ func GetCondPlace(list [][]KeywordDocuments_t, cond SearchCond_t) (*KeywordDocum
 	n := rand.Intn(MAX_SEARCH_DOC)
 	if len(matched_places) == 0 {
 		log.Println("Error, len(matched_place) is zero(0)")
-		return nil, 0, 0
+		return nil, 0
 	}
 
 	log.Println("rand num =", n, "len(matched_places) =", len(matched_places))
 
 	result := &matched_places[n%len(matched_places)]
 
-	// 현재 위치와 place간 거리 구하기
-	d := GetDistance(StrToFloat64(cond.X), StrToFloat64(cond.Y), StrToFloat64(result.X), StrToFloat64(result.Y))
-
-	return result, d, len(matched_places)
+	return result, len(matched_places)
 }

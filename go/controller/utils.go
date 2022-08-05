@@ -81,12 +81,18 @@ func GetRectCoord(dlat float64, dlng float64, d float64) RectCoord_t {
 
 /* 두 좌표 사이 거리 구하기, 반환값 단위 m(미터) */
 // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
-func GetDistance(lon1, lat1, lon2, lat2 float64) int {
+func GetDistance(lon1, lat1, lon2, lat2 string) int {
 	R := 6378.1
-	dLat := ConvDegToRad(lat2 - lat1)
-	dLon := ConvDegToRad(lon2 - lon1)
+
+	flon1 := StrToFloat64(lon1)
+	flat1 := StrToFloat64(lat2)
+	flon2 := StrToFloat64(lon2)
+	flat2 := StrToFloat64(lat2)
+
+	dLat := ConvDegToRad(flat2 - flat1)
+	dLon := ConvDegToRad(flon2 - flon1)
 	a := math.Sin(dLat/2)*math.Sin(dLat/2) +
-		math.Cos(ConvDegToRad(lat1))*math.Cos(ConvDegToRad(lat2))*
+		math.Cos(ConvDegToRad(flat1))*math.Cos(ConvDegToRad(flat2))*
 			math.Sin(dLon/2)*math.Sin(dLon/2)
 	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
 	d := R * c // Distance in km

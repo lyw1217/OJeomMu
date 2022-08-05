@@ -46,7 +46,6 @@ func InfoPage(c *gin.Context) {
 	)
 }
 
-
 // TestPage : GET, "/"
 func TestPage(c *gin.Context) {
 
@@ -63,7 +62,8 @@ func SearchHandler(c *gin.Context) {
 
 	var jsonData SearchCond_t
 	if c.BindJSON(&jsonData) == nil {
-		matched_place, d, total_nums, err := RectSearch(jsonData)
+		matched_place, total_nums, err := RectSearch(jsonData)
+
 		if err != nil {
 			log.Println("Error, failed RectSearch()")
 			return
@@ -72,6 +72,9 @@ func SearchHandler(c *gin.Context) {
 		if matched_place == nil {
 			log.Println("Error, failed GetCondPlace()")
 		} else {
+			// 현재 위치와 place간 거리 구하기
+			d := GetDistance(jsonData.X, jsonData.Y, matched_place.X, matched_place.Y)
+
 			// 데이터 전송
 			c.JSON(200, gin.H{
 				"ID":           matched_place.Id,
@@ -102,7 +105,7 @@ func InitRoutes(r *gin.Engine) {
 	r.GET("/", HomePage)
 	r.GET("/index.html", HomePage)
 	r.GET("/info.html", InfoPage)
-	r.GET("/test.html" , TestPage)
+	r.GET("/test.html", TestPage)
 
 	r.POST("/sendToGo", SearchHandler)
 

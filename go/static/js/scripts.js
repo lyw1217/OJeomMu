@@ -87,7 +87,9 @@ function sendToGo() {
           "success",
           homereturn,
           params["x"],
-          params["y"]
+          params["y"],
+          resData.X,
+          resData.Y
         );
         //resultAlert(resData.NAME, msg, resData.URL, "success" );
       }
@@ -105,10 +107,9 @@ var alert = function (title, msg, icon) {
   });
 };
 
-var resultAlert = function (title, msg, url, icon, hm, x, y) {
-//var resultAlert = function(title, msg, url, icon) {
-  swal(
-    msg,{
+var resultAlert = function (title, msg, url, icon, hm, x, y, dest_x, dest_y) {
+  //var resultAlert = function(title, msg, url, icon) {
+  swal(msg, {
     buttons: {
       cancel: "시러",
       catch: {
@@ -116,25 +117,35 @@ var resultAlert = function (title, msg, url, icon, hm, x, y) {
         value: "catch",
       },
     },
-    icon : icon,
-    title : title,
-  })
-  .then((value) => {
+    icon: icon,
+    title: title,
+  }).then((value) => {
     switch (value) {
       case "catch":
         if (isValidHttpUrl(url)) {
-            window.location.href = url;
+          setTimeout(function () {
+            var visitedAt = new Date().getTime(); // 방문 시간
+            if (new Date().getTime() - visitedAt < 2000) {
+              window.location.href = url;
+            }
+          }, 500);
+
+          setTimeout(function () {
+            //kakao_URL = `kakaomap://route?sp=${y},${x}&ep=${dest_y},${dest_x}&by=FOOT`;
+            kakao_URL = `kakaomap://search?q=${title}&p=${y},${x}`;
+            location.href = kakao_URL;
+          }, 0);
         } else {
-            swal("URL이 올바르지 않아요.", {
-                icon: "warning",
-            });
+          swal("조회한 URL이 올바르지 않아요.", {
+            icon: "warning",
+          });
         }
         break;
-   
+
       default:
         if (hm) {
-            // 원위치 복귀
-            setMarkerPosition(y, x);
+          // 원위치 복귀
+          setMarkerPosition(y, x);
         }
     }
   });
