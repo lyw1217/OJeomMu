@@ -1,10 +1,11 @@
 package controller
 
 import (
-	"fmt"
+	b64 "encoding/base64"
 	"log"
 	"net/http"
 	"ojeommu/config"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -72,7 +73,7 @@ func SearchHandler(c *gin.Context) {
 				Size:  15,
 				Sort:  "accuracy",
 			}
-			fmt.Println(p)
+
 			tmp, err := GetSearchKeyword(p, 500)
 			if err != nil {
 				log.Println("Error, Failed GetSearchKeyword()")
@@ -145,7 +146,26 @@ func SearchHandler(c *gin.Context) {
 	}
 }
 
+func checkAuth(key string) bool {
+	sDec, _ := b64.StdEncoding.DecodeString(key)
+	if strings.Compare(strings.Trim(string(sDec), " "), config.Keys.Newyo.Apikey) == 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
 func SearchBotHandler(c *gin.Context) {
+
+	auth := c.Query("auth")
+	if !checkAuth(auth) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status": http.StatusUnauthorized,
+			"reason": "Unauthorized API Key",
+		})
+		return
+	}
+
 	var jsonData SearchCond_t
 	var qry_result KeywordDocuments_t
 
@@ -158,7 +178,7 @@ func SearchBotHandler(c *gin.Context) {
 			Size:  15,
 			Sort:  "accuracy",
 		}
-		fmt.Println(p)
+
 		tmp, err := GetSearchKeyword(p, 500)
 		if err != nil {
 			log.Println("Error, Failed GetSearchKeyword()")
@@ -219,7 +239,7 @@ func InitRoutes(r *gin.Engine) {
 	r.GET("/test.html", TestPage)
 
 	r.POST("/sendToGo", SearchHandler)
-	r.POST("/ojeommu", SearchBotHandler)
+	r.GET("/ojeommu", SearchBotHandler)
 
 	/* Redirect, for scraping-news-go */
 	r.GET("/maekyung", RedirectMaeKyung)

@@ -21,6 +21,9 @@ type Kakao_t struct {
 
 type Keys_t struct {
 	Kakao Kakao_t `json:"kakao"`
+	Newyo struct {
+		Apikey string `json:"apikey"`
+	} `json:"newyo"`
 }
 
 // Load keys from json file
