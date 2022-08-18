@@ -239,7 +239,13 @@ func SearchBotHandler(c *gin.Context) {
 			// 현재 위치와 place간 거리 구하기
 			d := GetDistance(jsonData.X, jsonData.Y, matched_place.X, matched_place.Y)
 
-			c.String(http.StatusOK, "오늘 점심은 '%s' 어떠세요?@ %s (으)로부터 거리는 약 %dm에요.@ %s", matched_place.PlaceName, qry_result.PlaceName, d, matched_place.PlaceUrl)
+			c.JSON(http.StatusOK, gin.H{
+				"hdr":   matched_place.PlaceName,
+				"place": qry_result.PlaceName,
+				"d":     d,
+				"lnk":   matched_place.PlaceUrl,
+				"cat":   matched_place.CategoryName,
+			})
 			return
 		}
 	} else {
