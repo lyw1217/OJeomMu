@@ -26,6 +26,16 @@ func NotFoundPage(c *gin.Context) {
 // https://startbootstrap.com/template/simple-sidebar
 func HomePage(c *gin.Context) {
 
+	red_url := c.Query("redirect")
+
+	if len(red_url) > 0 {
+		c.Redirect(
+			http.StatusMovedPermanently,
+			red_url,
+		)
+		return
+	}
+
 	c.HTML(
 		http.StatusOK,
 		"views/index.html",
@@ -188,7 +198,13 @@ func SearchBotHandler(c *gin.Context) {
 			})
 			return
 		}
-		jsonData.Category = "anything"
+
+		cat := c.Query("cat")
+		if len(cat) > 0 {
+			jsonData.Category = cat
+		} else {
+			jsonData.Category = "anything"
+		}
 		jsonData.Radius = "0.5"
 		if len(tmp) > 0 {
 			jsonData.X = tmp[0].X
@@ -201,30 +217,36 @@ func SearchBotHandler(c *gin.Context) {
 			})
 			return
 		}
-	}
-	matched_place, _, err := RectSearch(jsonData)
+		matched_place, _, err := RectSearch(jsonData)
 
-	if err != nil {
-		log.Println("Error, failed RectSearch()")
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": http.StatusInternalServerError,
-			"reason": "Internal Server Error",
-		})
-		return
-	}
-	log.Println("matched_place =", matched_place)
-	if matched_place == nil {
-		log.Println("Error, failed GetCondPlace()")
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": http.StatusInternalServerError,
-			"reason": "Internal Server Error",
-		})
-		return
+		if err != nil {
+			log.Println("Error, failed RectSearch()")
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": http.StatusInternalServerError,
+				"reason": "Internal Server Error",
+			})
+			return
+		}
+		log.Println("matched_place =", matched_place)
+		if matched_place == nil {
+			log.Println("Error, failed GetCondPlace()")
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": http.StatusInternalServerError,
+				"reason": "Internal Server Error",
+			})
+			return
+		} else {
+			// 현재 위치와 place간 거리 구하기
+			d := GetDistance(jsonData.X, jsonData.Y, matched_place.X, matched_place.Y)
+
+			c.String(http.StatusOK, "오늘 점심은 '%s' 어떠세요?@ %s (으)로부터 거리는 약 %dm에요.@ %s", matched_place.PlaceName, qry_result.PlaceName, d, matched_place.PlaceUrl)
+			return
+		}
 	} else {
-		// 현재 위치와 place간 거리 구하기
-		d := GetDistance(jsonData.X, jsonData.Y, matched_place.X, matched_place.Y)
-
-		c.String(http.StatusOK, "오늘 점심은 '%s' 어떠세요?@------------------------------------------@ %s (으)로부터 거리는 %dm@ URL : %s", matched_place.PlaceName, qry_result.PlaceName, d, matched_place.PlaceUrl)
+		c.JSON(http.StatusNotFound, gin.H{
+			"status": http.StatusNotFound,
+			"reason": "Not Found",
+		})
 		return
 	}
 }
@@ -240,9 +262,4 @@ func InitRoutes(r *gin.Engine) {
 
 	r.POST("/sendToGo", SearchHandler)
 	r.GET("/ojeommu", SearchBotHandler)
-
-	/* Redirect, for scraping-news-go */
-	r.GET("/maekyung", RedirectMaeKyung)
-	r.GET("/hankyung", RedirectHanKyung)
-	r.GET("/quicknews", RedirectQuickNews)
 }
