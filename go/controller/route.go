@@ -2,9 +2,12 @@ package controller
 
 import (
 	b64 "encoding/base64"
+	"fmt"
 	"log"
 	"net/http"
 	"ojeommu/config"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -257,6 +260,31 @@ func SearchBotHandler(c *gin.Context) {
 	}
 }
 
+func WtImgHandler(c *gin.Context) {
+	auth := c.Query("auth")
+	if !checkAuth(auth) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status": http.StatusUnauthorized,
+			"reason": "Unauthorized API Key",
+		})
+		return
+	}
+	qry := c.Query("query")
+	if len(qry) > 0 {
+		img_path, _ := filepath.Abs(fmt.Sprintf("./assets/img/wt/wt%s.png", qry))
+		fmt.Println(img_path)
+		if _, err := os.Stat(img_path); os.IsNotExist(err) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"status": http.StatusNotFound,
+				"reason": "Not Found",
+			})
+			return 
+		}
+		
+		c.File(img_path)
+	}
+}
+
 func InitRoutes(r *gin.Engine) {
 
 	r.NoRoute(NotFoundPage)
@@ -268,4 +296,5 @@ func InitRoutes(r *gin.Engine) {
 
 	r.POST("/sendToGo", SearchHandler)
 	r.GET("/ojeommu", SearchBotHandler)
+	r.GET("/weather", WtImgHandler)
 }
