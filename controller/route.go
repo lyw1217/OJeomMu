@@ -278,9 +278,9 @@ func WtImgHandler(c *gin.Context) {
 				"status": http.StatusNotFound,
 				"reason": "Not Found",
 			})
-			return 
+			return
 		}
-		
+
 		c.File(img_path)
 	}
 }

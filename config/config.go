@@ -1,10 +1,8 @@
 package config
 
 import (
-	"encoding/json" // https://pkg.go.dev/encoding/json
 	"log"
 	"os"
-	"path/filepath"
 )
 
 const (
@@ -30,17 +28,16 @@ type Keys_t struct {
 func LoadKeysConfig() Keys_t {
 	var k Keys_t
 
-	path, _ := filepath.Abs(keyPath)
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
+	k.Kakao.Rest = os.Getenv("KAKAO_REST")
+	k.Kakao.JS = os.Getenv("KAKAO_JS")
+	k.Kakao.Admin = os.Getenv("KAKAO_ADMIN")
+	if k.Kakao.Rest == "" {
+		log.Fatal("$KAKAO_REST must be set")
 	}
-	defer file.Close()
 
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&k)
-	if err != nil {
-		log.Fatal(err)
+	k.Newyo.Apikey = os.Getenv("NEWYO_KEY")
+	if k.Newyo.Apikey == "" {
+		log.Fatal("$NEWYO_KEY must be set")
 	}
 
 	log.Print("Successful loading of Key Info ........")
