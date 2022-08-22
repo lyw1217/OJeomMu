@@ -170,13 +170,20 @@ func checkAuth(key string) bool {
 
 func SearchBotHandler(c *gin.Context) {
 
+	/*
+		auth := c.Query("auth")
+		if !checkAuth(auth) {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"status": http.StatusUnauthorized,
+				"reason": "Unauthorized API Key",
+			})
+			return
+		}
+	*/
+
 	auth := c.Query("auth")
-	if !checkAuth(auth) {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": http.StatusUnauthorized,
-			"reason": "Unauthorized API Key",
-		})
-		return
+	if len(auth) > 0 {
+		config.Keys.Kakao.Rest = auth
 	}
 
 	var jsonData SearchCond_t
