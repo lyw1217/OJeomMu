@@ -237,7 +237,7 @@ func SearchBotHandler(c *gin.Context) {
 			})
 			return
 		}
-		log.Println("matched_place =", matched_place)
+		//log.Println("matched_place =", matched_place)
 		if matched_place == nil {
 			log.Println("Error, failed GetCondPlace()")
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -264,9 +264,9 @@ func SearchBotHandler(c *gin.Context) {
 			return
 		}
 	} else {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status": http.StatusNotFound,
-			"reason": "Not Found",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"reason": "Bad Request",
 		})
 		return
 	}
