@@ -243,11 +243,16 @@ func SearchBotHandler(c *gin.Context) {
 			d := GetDistance(jsonData.X, jsonData.Y, matched_place.X, matched_place.Y)
 
 			c.JSON(http.StatusOK, gin.H{
-				"hdr":   matched_place.PlaceName,
-				"place": qry_result.PlaceName,
-				"d":     d,
-				"lnk":   matched_place.PlaceUrl,
-				"cat":   matched_place.CategoryName,
+				"hdr":     matched_place.PlaceName,
+				"place":   qry_result.PlaceName,
+				"d":       d,
+				"lnk":     matched_place.PlaceUrl,
+				"cat":     matched_place.CategoryName,
+				"address": matched_place.AddressName,
+				"road":    matched_place.RoadAddressName,
+				"phone":   matched_place.Phone,
+				"x":       matched_place.X,
+				"y":       matched_place.Y,
 			})
 			return
 		}
@@ -295,6 +300,6 @@ func InitRoutes(r *gin.Engine) {
 	r.GET("/test.html", TestPage)
 
 	r.POST("/sendToGo", SearchHandler)
-	r.GET("/ojeommu", SearchBotHandler)
+	r.GET("/api", SearchBotHandler)
 	r.GET("/weather", WtImgHandler)
 }
