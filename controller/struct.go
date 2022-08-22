@@ -1,6 +1,6 @@
 package controller
 
-const MAX_SEARCH_PAGE = 10 // 최대 API 호출 횟수
+const MAX_SEARCH_PAGE = 2  // 최대 API 호출 횟수
 const MAX_SEARCH_DOC = 180 // 최대 매장 개수(45 * 4개 사분면)
 
 /* KAKAO KEYWORD SEARCH */

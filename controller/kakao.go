@@ -113,8 +113,6 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 			if tmp.Meta.IsEnd {
 				break
 			}
-
-			time.Sleep(time.Millisecond * 1)
 		}
 	}
 
@@ -189,7 +187,7 @@ func RectSearch(cond SearchCond_t) (*KeywordDocuments_t, int, error) {
 		}
 		list[i] = tmp
 
-		time.Sleep(time.Millisecond * 10)
+		//time.Sleep(time.Millisecond * 10)
 	}
 	result, total_nums := GetCondPlace(list, cond)
 
