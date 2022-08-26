@@ -4,11 +4,13 @@ import (
 	b64 "encoding/base64"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"ojeommu/config"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -168,23 +170,13 @@ func checkAuth(key string) bool {
 	}
 }
 
-func SearchBotHandler(c *gin.Context) {
-
-	auth := c.Query("auth")
-	if !checkAuth(auth) {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": http.StatusUnauthorized,
-			"reason": "Unauthorized API Key",
-		})
-		return
-	}
-
+func searchKakao(c *gin.Context) {
 	var jsonData SearchCond_t
 	var qry_result KeywordDocuments_t
 
 	qry := c.Query("query")
 	if len(qry) > 0 {
-
+		// 현재 위치 검색
 		var p = KeywordParam_t{
 			Query: qry,
 			Page:  1,
@@ -220,6 +212,7 @@ func SearchBotHandler(c *gin.Context) {
 			})
 			return
 		}
+		// 현재 위치 주변 음식점 검색
 		matched_place, _, err := RectSearch(jsonData)
 
 		if err != nil {
@@ -260,6 +253,67 @@ func SearchBotHandler(c *gin.Context) {
 	}
 }
 
+func searchNaver(c *gin.Context) {
+	qry := c.Query("query")
+	if len(qry) > 0 {
+		var p = LocalParam_t{
+			Query:   qry,
+			Display: 5,
+			Start:   1,
+			Sort:    "random",
+		}
+
+		qry_result, err := GetNaverLocal(p)
+		if err != nil {
+			log.Println("Error, Failed GetSearchKeyword()")
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": http.StatusInternalServerError,
+				"reason": "Internal Server Error",
+			})
+			return
+		}
+
+		rand.Seed(time.Now().UnixNano())
+		n := rand.Intn(len(qry_result.Items)) % len(qry_result.Items)
+
+		c.JSON(http.StatusOK, gin.H{
+			"hdr":   qry_result.Items[n].Title,
+			"place": qry,
+			"lnk":   qry_result.Items[n].Link,
+			"cat":   qry_result.Items[n].Category,
+		})
+		return
+	} else {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status": http.StatusNotFound,
+			"reason": "Not Found",
+		})
+		return
+	}
+}
+
+func SearchBotHandler(c *gin.Context) {
+
+	auth := c.Query("auth")
+	if !checkAuth(auth) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status": http.StatusUnauthorized,
+			"reason": "Unauthorized API Key",
+		})
+		return
+	}
+
+	target := c.Query("target")
+
+	if target == "naver" {
+		searchNaver(c)
+	} else if target == "kakao" {
+		searchKakao(c)
+	} else {
+		searchKakao(c)
+	}
+}
+
 func WtImgHandler(c *gin.Context) {
 	auth := c.Query("auth")
 	if !checkAuth(auth) {
@@ -278,9 +332,9 @@ func WtImgHandler(c *gin.Context) {
 				"status": http.StatusNotFound,
 				"reason": "Not Found",
 			})
-			return 
+			return
 		}
-		
+
 		c.File(img_path)
 	}
 }

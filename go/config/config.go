@@ -19,8 +19,16 @@ type Kakao_t struct {
 	Admin string `json:"admin"`
 }
 
+type Naver_t struct {
+	Id        string `json:"id"`
+	Secret    string `json:"secret"`
+	NcpId     string `json:"ncp_id"`
+	NcpSecret string `json:"ncp_secret"`
+}
+
 type Keys_t struct {
 	Kakao Kakao_t `json:"kakao"`
+	Naver Naver_t `json:"naver"`
 	Newyo struct {
 		Apikey string `json:"apikey"`
 	} `json:"newyo"`
