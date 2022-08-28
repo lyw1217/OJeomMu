@@ -221,9 +221,10 @@ func SearchBotHandler(c *gin.Context) {
 			jsonData.Y = tmp[0].Y
 			qry_result.PlaceName = tmp[0].PlaceName
 		} else {
+			log.Println("Not Found Keyword Place")
 			c.JSON(http.StatusNotFound, gin.H{
 				"status": http.StatusNotFound,
-				"reason": "Not Found",
+				"reason": fmt.Sprintf("Query(%s) Place Not Found", qry),
 			})
 			return
 		}
@@ -239,10 +240,9 @@ func SearchBotHandler(c *gin.Context) {
 		}
 		//log.Println("matched_place =", matched_place)
 		if matched_place == nil {
-			log.Println("Error, failed GetCondPlace()")
 			c.JSON(http.StatusNotFound, gin.H{
 				"status": http.StatusNotFound,
-				"reason": "Not Found",
+				"reason": fmt.Sprintf("Not Found Restaurant 500m around query(%s)", qry),
 			})
 			return
 		} else {
