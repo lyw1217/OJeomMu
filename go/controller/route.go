@@ -226,9 +226,9 @@ func searchKakao(c *gin.Context) {
 		log.Println("matched_place =", matched_place)
 		if matched_place == nil {
 			log.Println("Error, failed GetCondPlace()")
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"status": http.StatusInternalServerError,
-				"reason": "Internal Server Error",
+			c.JSON(http.StatusNotFound, gin.H{
+				"status": http.StatusNotFound,
+				"reason": "Not Found",
 			})
 			return
 		} else {
