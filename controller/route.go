@@ -242,7 +242,7 @@ func SearchBotHandler(c *gin.Context) {
 		if matched_place == nil {
 			c.JSON(http.StatusNotFound, gin.H{
 				"status": http.StatusNotFound,
-				"reason": fmt.Sprintf("Not Found Restaurant 500m around query(%s)", qry),
+				"reason": fmt.Sprintf("Not Found Restaurant 500m around (query(%s), searchd_place(%s))", qry, qry_result.PlaceName),
 			})
 			return
 		} else {
