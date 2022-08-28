@@ -122,7 +122,7 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 		fd6_list = append(fd6_list, d.Documents...)
 	}
 
-	//log.Println("len = ", len(fd6_list), " cap = ", cap(fd6_list))
+	log.Println("len = ", len(fd6_list), " cap = ", cap(fd6_list))
 
 	return fd6_list, nil
 }

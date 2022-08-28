@@ -123,9 +123,9 @@ func SearchHandler(c *gin.Context) {
 		log.Println("matched_place =", matched_place)
 		if matched_place == nil {
 			log.Println("Error, failed GetCondPlace()")
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"status": http.StatusInternalServerError,
-				"reason": "Internal Server Error",
+			c.JSON(http.StatusNotFound, gin.H{
+				"status": http.StatusNotFound,
+				"reason": "Not Found",
 			})
 		} else {
 			// 현재 위치와 place간 거리 구하기
@@ -240,9 +240,9 @@ func SearchBotHandler(c *gin.Context) {
 		//log.Println("matched_place =", matched_place)
 		if matched_place == nil {
 			log.Println("Error, failed GetCondPlace()")
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"status": http.StatusInternalServerError,
-				"reason": "Internal Server Error",
+			c.JSON(http.StatusNotFound, gin.H{
+				"status": http.StatusNotFound,
+				"reason": "Not Found",
 			})
 			return
 		} else {
