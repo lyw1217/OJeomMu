@@ -35,16 +35,15 @@ EXPOSE 22
 
 WORKDIR /usr/src/app
 
-COPY --chown=0:0 --from=builder /usr/src/app/assets					      /usr/src/app/assets
-COPY --chown=0:0 --from=builder /usr/src/app/static					      /usr/src/app/static
-COPY --chown=0:0 --from=builder /usr/src/app/templates				    /usr/src/app/templates
+COPY --chown=0:0 --from=builder /usr/src/app/assets					/usr/src/app/assets
+COPY --chown=0:0 --from=builder /usr/src/app/static					/usr/src/app/static
+COPY --chown=0:0 --from=builder /usr/src/app/templates				/usr/src/app/templates
 
-COPY --chown=0:0 --from=builder /usr/src/app/config/keys.json		  /usr/src/app/config/keys.json
-COPY --chown=0:0 --from=builder /usr/src/app/config/logging.json	/usr/src/app/config/logging.json
-COPY --chown=0:0 --from=builder /usr/src/app/log					        /usr/src/app/log
-COPY --chown=0:0 --from=builder /usr/src/app/go.mod					      /usr/src/app/go.mod
-COPY --chown=0:0 --from=builder /usr/src/app/go.sum					      /usr/src/app/go.sum
-COPY --chown=0:0 --from=builder /usr/src/app/ojeommu				      /usr/src/app/ojeommu
+COPY --chown=0:0 --from=builder /usr/src/app/config/keys.json		/usr/src/app/config/keys.json
+COPY --chown=0:0 --from=builder /usr/src/app/log					/usr/src/app/log
+COPY --chown=0:0 --from=builder /usr/src/app/go.mod					/usr/src/app/go.mod
+COPY --chown=0:0 --from=builder /usr/src/app/go.sum					/usr/src/app/go.sum
+COPY --chown=0:0 --from=builder /usr/src/app/ojeommu				/usr/src/app/ojeommu
 
 RUN ln -s /usr/src/app/ojeommu /usr/local/bin/ojeommu
 

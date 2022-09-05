@@ -1,0 +1,12 @@
+# OJEOMMU
+ARG ARCH=
+ARG BUILD_IMAGE=${ARCH}golang:1.18-buster
+
+FROM ${BUILD_IMAGE}
+    
+WORKDIR /usr/src/app
+
+COPY . .
+RUN go mod download && go mod verify
+
+RUN go build -v -o /usr/src/app/ojeommu .
