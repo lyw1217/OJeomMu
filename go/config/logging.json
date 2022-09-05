@@ -1,0 +1,9 @@
+{
+    "filename":"./log/%s_ojeommu.log",
+    "maxsize":10,
+    "maxage":7,
+    "maxbackups":7,
+    "localtime":true,
+    "FullTimestamp": true,
+	"ForceQuote": true
+}

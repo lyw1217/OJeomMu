@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"log"
 	"math"
 	"strconv"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func ConvRadToDeg(r float64) float64 {
