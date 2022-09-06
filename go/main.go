@@ -1,12 +1,13 @@
 package main
 
 import (
-	"log"
 	"ojeommu/config"
 	"ojeommu/controller"
 	"os"
 	"os/signal"
 	"syscall"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 	"github.com/unrolled/secure"
