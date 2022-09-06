@@ -3,12 +3,13 @@ package controller
 import (
 	b64 "encoding/base64"
 	"fmt"
-	"log"
 	"net/http"
 	"ojeommu/config"
 	"os"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )

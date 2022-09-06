@@ -13,4 +13,7 @@ const (
 	KakaoSearchKeywordUrl string = "https://dapi.kakao.com/v2/local/search/keyword.json"
 	/* KAKAO ADDRESS SEARCH */
 	KakaoSearchAddressUrl string = "https://dapi.kakao.com/v2/local/search/address.json"
+
+	/* NAVER LOCAL SEARCH */
+	NaverSearchLocalUrl string = "https://openapi.naver.com/v1/search/local.json"
 )
