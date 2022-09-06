@@ -223,7 +223,7 @@ $RECYCLE.BIN/
 **/migrations_bk/*
 **/ojeommu.db
 
-**/config/*.json
+**/config/keys.json
 
 **/log/*
 
