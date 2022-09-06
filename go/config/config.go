@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -103,6 +104,7 @@ func SetupLogger() {
 
 	// Fork writing into two outputs
 	multiWriter := io.MultiWriter(os.Stderr, l) // Stderr와 파일에 동시  출력
+	gin.DefaultWriter = io.MultiWriter(os.Stdout, l)
 
 	logFormatter := new(log.TextFormatter)
 	logFormatter.TimestampFormat = time.RFC1123Z // or RFC3339

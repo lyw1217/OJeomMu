@@ -3,8 +3,8 @@
 APP="OJeomMu"
 DIR_PATH="/home/ubuntu/Documents/github/${APP}/go"
 CMD_GO="/usr/local/go/bin/go"
-LOG_PATH="${DIR_PATH}/log"
-LOG_NAME="nohup.log"
+#LOG_PATH="${DIR_PATH}/log"
+#LOG_NAME="nohup.log"
 CMD="ojeommu"
 EXE="${DIR_PATH}/${CMD}"
 
@@ -15,15 +15,17 @@ WAIT_TIME=7
 
 check_dir()
 {
-	target_dir=($DIR_PATH $LOG_PATH)
+	#target_dir=($DIR_PATH $LOG_PATH)
+	target_dir=($DIR_PATH)
 
 	for dir in ${target_dir[@]}
 	do
 		if [ ! -d $dir ];then
 			echo " Directory Does Not Exist! > ${dir}"
 			echo ""
-			echo " mkdir ${dir}"
-			/usr/bin/mkdir ${dir}
+			#echo " mkdir ${dir}"
+			#/usr/bin/mkdir ${dir}
+			exit 1
 		fi
 	done
 }
@@ -105,7 +107,8 @@ start_app()
 	echo ""
 	echo " > 서버 실행"
 	echo ""
-	nohup ./${CMD} >> ${LOG_PATH}/${LOG_NAME} 2>&1 &
+	#nohup ./${CMD} >> ${LOG_PATH}/${LOG_NAME} 2>&1 &
+	./${CMD} &
 	sleep 3
 
 	for cnt in {1..${WAIT_TIME}}
