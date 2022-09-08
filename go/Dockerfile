@@ -39,6 +39,7 @@ COPY --chown=0:0 --from=builder /usr/src/app/assets					      /usr/src/app/asset
 COPY --chown=0:0 --from=builder /usr/src/app/static					      /usr/src/app/static
 COPY --chown=0:0 --from=builder /usr/src/app/templates				    /usr/src/app/templates
 
+COPY --chown=0:0 --from=builder /usr/src/app/scripts				      /usr/src/app/scripts
 COPY --chown=0:0 --from=builder /usr/src/app/config/keys.json		  /usr/src/app/config/keys.json
 COPY --chown=0:0 --from=builder /usr/src/app/config/logging.json	/usr/src/app/config/logging.json
 COPY --chown=0:0 --from=builder /usr/src/app/log					        /usr/src/app/log
