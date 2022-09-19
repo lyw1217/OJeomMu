@@ -23,6 +23,8 @@ const (
 	loggingPath string = "./config/logging.json"
 )
 
+var Keys Keys_t
+
 type Kakao_t struct {
 	Rest  string `json:"rest_api"`
 	JS    string `json:"javascript"`
@@ -115,11 +117,4 @@ func SetupLogger() {
 	log.SetOutput(multiWriter)
 	log.SetReportCaller(true) // 해당 이벤트 발생 시 함수, 파일명 표기
 	log.Error("Successful Logger setup ...............")
-}
-
-var Keys Keys_t
-
-func init() {
-	Keys = LoadKeysConfig()
-	SetupLogger()
 }
