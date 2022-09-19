@@ -13,16 +13,11 @@ import (
 	"github.com/unrolled/secure"
 )
 
-func ServeStaticFiles(r *gin.Engine) {
-	r.Static("/css", "./static/css")
-	r.Static("/js", "./static/js")
-	r.Static("/assets", "./assets")
-	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
-	r.StaticFile("/robots.txt", "./static/robots.txt")
-	r.LoadHTMLGlob("templates/**/*")
-}
-
 func main() {
+
+	config.Keys = config.LoadKeysConfig()
+	config.SetupLogger()
+
 	secureFunc := func() gin.HandlerFunc {
 		return func(c *gin.Context) {
 			secureMiddleware := secure.New(secure.Options{
@@ -42,7 +37,7 @@ func main() {
 
 	routeHttp := gin.Default()
 	routeHttp.Use(secureFunc)
-	ServeStaticFiles(routeHttp)
+	controller.ServeStaticFiles(routeHttp)
 	// Initialize the routes
 	controller.InitRoutes(routeHttp)
 
