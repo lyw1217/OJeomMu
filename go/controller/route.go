@@ -341,12 +341,12 @@ func WtImgHandler(c *gin.Context) {
 }
 
 func ServeStaticFiles(r *gin.Engine) {
-	r.Static("/css", "../static/css")
-	r.Static("/js", "../static/js")
-	r.Static("/assets", "../assets")
-	r.StaticFile("/favicon.ico", "../assets/favicon.ico")
-	r.StaticFile("/robots.txt", "../static/robots.txt")
-	r.LoadHTMLGlob("../templates/**/*")
+	r.Static("/css", "./static/css")
+	r.Static("/js", "./static/js")
+	r.Static("/assets", "./assets")
+	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
+	r.StaticFile("/robots.txt", "./static/robots.txt")
+	r.LoadHTMLGlob("./templates/**/*")
 }
 
 func InitRoutes(r *gin.Engine) {
