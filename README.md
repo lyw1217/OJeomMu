@@ -2,7 +2,8 @@
 
 오늘 점심 뭐 먹을지 골라볼까
 
-Domain : https://mumeog.site/
+Domain : https://lunchtoday.site/
+Domain : https://오점무.site/
 
 ## 1. 개발 환경
 
