@@ -8,9 +8,9 @@ import (
 	"syscall"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/unrolled/secure"
 
 	"github.com/gin-gonic/gin"
-	"github.com/unrolled/secure"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 		return func(c *gin.Context) {
 			secureMiddleware := secure.New(secure.Options{
 				SSLRedirect: true,
-				SSLHost:     "mumeog.site",
+				SSLHost:     "lunchtoday.site",
 			})
 			err := secureMiddleware.Process(c.Writer, c.Request)
 
@@ -44,8 +44,16 @@ func main() {
 	// HTTP
 	go routeHttp.Run(":80")
 	// HTTPS
-	routeHttp.RunTLS(":8443", config.ServerCrt, config.ServerKey)
+	routeHttp.RunTLS(":443", config.ServerCrt, config.ServerKey)
 
+	/*
+		routeHttp := gin.Default()
+		controller.ServeStaticFiles(routeHttp)
+		// Initialize the routes
+		controller.InitRoutes(routeHttp)
+
+		log.Fatal(autotls.Run(routeHttp, "mumeog.site", "lunchtoday.site", "오점무.site"))
+	*/
 	quit := make(chan os.Signal, 1)
 	done := make(chan bool, 1)
 	// kill (no param) default send syscanll.SIGTERM
