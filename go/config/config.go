@@ -17,8 +17,8 @@ const (
 	keyPath string = "./config/keys.json"
 	//ServerCrt string = "/etc/letsencrypt/live/mumeog.site/fullchain.pem"
 	//ServerKey string = "/etc/letsencrypt/live/mumeog.site/privkey.pem"
-	ServerCrt string = "./cert/archive_lunchtoday/cert.pem"
-	ServerKey string = "./cert/archive_lunchtoday/privkey.pem"
+	ServerCrt string = "./cert/archive/cert.pem"
+	ServerKey string = "./cert/archive/privkey.pem"
 )
 
 const (

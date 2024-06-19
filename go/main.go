@@ -22,7 +22,7 @@ func main() {
 		return func(c *gin.Context) {
 			secureMiddleware := secure.New(secure.Options{
 				SSLRedirect: true,
-				SSLHost:     "lunchtoday.site",
+				SSLHost:     "lyw1217.synology.me",
 			})
 			err := secureMiddleware.Process(c.Writer, c.Request)
 
