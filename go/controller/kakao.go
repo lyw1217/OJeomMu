@@ -39,7 +39,8 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 	k := config.Keys.Kakao
 	req.Header.Add("Authorization", "KakaoAK "+k.Rest)
 
-	//log.Printf("Encoded URL is %q\n", req.URL.String())
+	log.Printf("Encoded URL is %q\n", req.URL.String())
+	log.Printf("Header is %q\n", req.Header.String())
 
 	client := &http.Client{}
 	rsp, err := client.Do(req)
