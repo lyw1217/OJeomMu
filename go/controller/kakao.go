@@ -36,11 +36,10 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 		log.Println(err)
 		return nil, err
 	}
-	k := config.Keys.Kakao
-	req.Header.Add("Authorization", "KakaoAK "+k.Rest)
+	key := config.Keys.Kakao.Rest
+	req.Header.Add("Authorization", "KakaoAK "+key)
 
-	log.Printf("Encoded URL is %q\n", req.URL.String())
-	log.Printf("Header is %q\n", req.Header.String())
+	//log.Printf("Encoded URL is %q\n", req.URL.String())
 
 	client := &http.Client{}
 	rsp, err := client.Do(req)
@@ -83,7 +82,7 @@ func GetSearchKeyword(p KeywordParam_t, rad int) ([]KeywordDocuments_t, error) {
 				log.Println(err)
 				return nil, err
 			}
-			req.Header.Add("Authorization", "KakaoAK "+k.Rest)
+			req.Header.Add("Authorization", "KakaoAK "+key)
 
 			//log.Printf("Encoded URL is %q\n", req.URL.String())
 
