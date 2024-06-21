@@ -18,25 +18,25 @@ func main() {
 	config.Keys = config.LoadKeysConfig()
 	config.SetupLogger()
 
-	secureFunc := func() gin.HandlerFunc {
-		return func(c *gin.Context) {
-			secureMiddleware := secure.New(secure.Options{
-				SSLRedirect: true,
-				SSLHost:     "lyw1217.synology.me",
-			})
-			err := secureMiddleware.Process(c.Writer, c.Request)
-
-			// If there was an error, do not continue.
-			if err != nil {
-				return
-			}
-
-			c.Next()
-		}
-	}()
+	//secureFunc := func() gin.HandlerFunc {
+	//	return func(c *gin.Context) {
+	//		secureMiddleware := secure.New(secure.Options{
+	//			SSLRedirect: true,
+	//			SSLHost:     "lyw1217.synology.me",
+	//		})
+	//		err := secureMiddleware.Process(c.Writer, c.Request)
+//
+	//		// If there was an error, do not continue.
+	//		if err != nil {
+	//			return
+	//		}
+//
+	//		c.Next()
+	//	}
+	//}()
 
 	routeHttp := gin.Default()
-	routeHttp.Use(secureFunc)
+	//routeHttp.Use(secureFunc)
 	controller.ServeStaticFiles(routeHttp)
 	// Initialize the routes
 	controller.InitRoutes(routeHttp)
