@@ -1,0 +1,195 @@
+<!--test.html-->
+
+{{ define "views/test.html"}}
+{{ template "layouts/header.html" .}}
+<style>
+  /* kakaomap */
+  .map_wrap {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    margin-bottom: 1rem;
+  }
+
+  .map_title {
+    font-weight: bold;
+    display: block;
+  }
+
+  .hAddr {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border-radius: 2px;
+    background: #fff;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1;
+    padding: 5px;
+  }
+
+  #currAddr {
+    display: block;
+    margin-top: 2px;
+    font-weight: normal;
+  }
+
+  .bAddr {
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .form {
+    position: relative;
+    width: 100%;
+    margin: 1rem auto;
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  .radius_border {
+    border: 1px #9f9f9f;
+    border-radius: 5px;
+  }
+
+  .custom_gps {
+    position: absolute;
+    top: 75px;
+    left: 15px;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #ffffff;
+  }
+
+  .custom_gps span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    margin: 2px auto;
+    cursor: pointer;
+  }
+
+  .custom_gps span img {
+    width: 25px;
+    height: 25px;
+    border: none;
+  }
+
+  label {
+    display:inline-block;
+    width:80px;
+    line-height:40px;
+  }
+</style>
+<!-- https://startbootstrap.com/template/sb-admin -->
+
+{{ template "layouts/nav.html" .}}
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">오늘 무먹?</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item active"></li>
+    </ol>
+    <ol class="breadcrumb mb-4"><a style="text-decoration:none" class="link-secondary" href="info.html">무먹이 뭐에요?</a></ol>
+    <div class="row">
+     <!--
+      <div class="selection">
+        <label>
+         <input type="checkbox" name="homereturn" id="homereturn" value="true" checked>
+          원래 위치로 돌아가기
+        </label>
+     </div>
+     -->
+      <div class="map_wrap">
+        <div id="map" style="
+                  width: 100%;
+                  height: 100%;
+                  position: relative;
+                  overflow: hidden;
+                "></div>
+        <div class="hAddr">
+          <span class="map_title">주소정보</span>
+          <span id="currAddr"></span>
+        </div>
+        <div class="custom_gps radius_border">
+          <span onclick="getCurrentPosBtn()">
+            <img src="/assets/img/gps.png" alt="GPS" onmouseover="this.src='/assets/img/gps_hover.png';" onmouseout="this.src='/assets/img/gps.png';">
+          </span>
+        </div>
+      </div>
+      <form method="GET" class="form">
+        <div class="selection">
+          <select name="radius" id="radius" class="form-select">
+            <option value="0">거리</option>
+            <option value="0.1">100m</option>
+            <option value="0.2">200m</option>
+            <option value="0.3">300m</option>
+            <option value="0.5">500m</option>
+            <option value="1.0">1km</option>
+            <option value="2.0">2km</option>
+            <option value="3.0">3km</option>
+            <option value="5.0">5km</option>
+          </select>
+        </div>
+        <div class="selection">
+          <!--
+          <select name="category" id="category" class="form-select">
+            <option value="none">카테고리</option>
+            <option value="anything">아무거나</option>
+            <option value="korea">한식</option>
+            <option value="china">중식</option>
+            <option value="japan">일식</option>
+            <option value="western">양식</option>
+            <option value="flour">분식</option>
+            <option value="asia">아시아음식</option>
+            <option value="lunchbox">도시락</option>
+            <option value="meat">육류,고기</option>
+            <option value="chicken">치킨</option>
+            <option value="fastfood">패스트푸드</option>
+            <option value="bar">술집</option>
+          </select>
+          -->
+          <input type="checkbox" id="korea">
+          <label for="korea">한식</label>
+          <input type="checkbox" id="china">
+          <label for="china">중식</label>
+          <input type="checkbox" id="china">
+          <label for="china">중식</label>
+          <br>
+          <input type="checkbox" id="western">
+          <label for="western">양식</label>
+          <input type="checkbox" id="flour">
+          <label for="flour">분식</label>
+          <input type="checkbox" id="asia">
+          <label for="asia">아시아</label>
+          <br>
+          <input type="checkbox" id="lunchbox">
+          <label for="lunchbox">도시락</label>
+          <input type="checkbox" id="meat">
+          <label for="meat">고기</label>
+          <input type="checkbox" id="chicken">
+          <label for="chicken">치킨</label>
+          <br>
+          <input type="checkbox" id="fastfood">
+          <label for="fastfood">패스트푸드</label>
+          <input type="checkbox" id="bar">
+          <label for="bar">술집</label>
+        </div>
+        <div class="selection">
+          <br>
+          <input type="button" class="btn btn-primary" onclick="sendToGo()" value="오늘 뭐 먹을까?" />
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ .key }}&libraries=services"></script>
+<script src="js/map.js"></script>
+
+{{ template "layouts/footer.html" .}}
+{{ end }}
