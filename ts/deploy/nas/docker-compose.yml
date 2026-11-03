@@ -1,0 +1,22 @@
+# NAS (DS720+) deploy for the TypeScript ojeommu. Run from the repo checkout:
+#   docker compose -f ts/deploy/nas/docker-compose.yml up -d --build
+# DSM reverse proxy: https://ojeommu.lyw1217.synology.me:443 -> http://localhost:3023 (TLS ends there).
+name: ojeommu
+services:
+  ojeommu:
+    build: ../..
+    image: ojeommu-ts:local
+    container_name: ojeommu
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${OJEOMMU_PORT:-3023}:8080"
+    volumes:
+      # The Go service's keys.json, same format; mounted read-only.
+      - ${OJEOMMU_KEYS_FILE:-/volume1/docker/ojeommu/config/keys.json}:/app/config/keys.json:ro
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 15s # the app drains in-flight requests for up to 10 s on SIGTERM
+    logging:
+      driver: json-file
+      options: { max-size: 10m, max-file: "3" }
