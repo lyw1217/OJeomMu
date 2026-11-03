@@ -21,12 +21,12 @@ https://ojeommu.lyw1217.synology.me ──(DSM 리버스 프록시, TLS)──�
 
 ## 1. 레포 받기 (NAS SSH, 처음 한 번)
 
-NAS 셸에는 git이 없어서 git 컨테이너로 받습니다.
+NAS 셸에는 git이 없어서 git 컨테이너로 받습니다. 컨테이너는 Synology ACL 때문에 `/volume1/docker`에 폴더를 만들 수 없으므로, 폴더는 셸에서 먼저 만듭니다.
 
 ```bash
-cd /volume1/docker
-docker run --rm -u "$(id -u):$(id -g)" -v /volume1/docker:/w -w /w alpine/git:v2.52.0 \
-  clone https://github.com/lyw1217/OJeomMu.git ojeommu-ts
+mkdir /volume1/docker/ojeommu-ts && cd /volume1/docker/ojeommu-ts
+docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD":/w -w /w alpine/git:v2.52.0 \
+  clone https://github.com/lyw1217/OJeomMu.git .
 test -f /volume1/docker/ojeommu/config/keys.json && echo keys OK
 ```
 
@@ -71,7 +71,7 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:3023/     # 200
 main에 새 커밋이 생기면 다음을 실행합니다.
 
 ```bash
-docker run --rm -u "$(id -u):$(id -g)" -v /volume1/docker/ojeommu-ts:/w -w /w alpine/git:v2.52.0 pull --ff-only origin main
+docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp -v /volume1/docker/ojeommu-ts:/w -w /w alpine/git:v2.52.0 pull --ff-only origin main
 cd /volume1/docker/ojeommu-ts && docker compose -f ts/deploy/nas/docker-compose.yml up -d --build
 ```
 
