@@ -25,3 +25,5 @@ docker buildx build --platform linux/amd64 -t lyw1217/ojeommu:ts .
 로그는 stdout으로만 냅니다(`docker logs`). Go 버전의 `log/*.log` 파일 로테이션은 없앴습니다.
 
 기능 대조표는 [PARITY.md](PARITY.md)에 있습니다.
+
+NAS 배포 절차는 [deploy/nas/DEPLOY.md](deploy/nas/DEPLOY.md)에 있습니다.
