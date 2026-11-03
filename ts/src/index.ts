@@ -31,10 +31,16 @@ if (config.tlsCertFile && config.tlsKeyFile) {
   );
 }
 
+// Stop accepting connections, let in-flight requests finish, then exit (forced after SHUTDOWN_TIMEOUT_MS).
+const SHUTDOWN_TIMEOUT_MS = 10_000;
 for (const sig of ["SIGINT", "SIGTERM"] as const) {
-  process.on(sig, () => {
+  process.once(sig, () => {
     console.log(`[ojeommu] ${sig}, shutting down`);
-    for (const s of servers) s.close();
-    process.exit(0);
+    setTimeout(() => {
+      console.error("[ojeommu] in-flight requests did not finish, forcing exit");
+      process.exit(1);
+    }, SHUTDOWN_TIMEOUT_MS).unref();
+    let open = servers.length;
+    for (const s of servers) s.close(() => --open === 0 && process.exit(0));
   });
 }

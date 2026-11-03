@@ -33,6 +33,9 @@ export function checkAuth(auth: string | undefined, apiKey: string): boolean {
   return timingSafeEqual(a, b);
 }
 
+/** The bot sends `auth` = base64(apikey) in the query string; keep it out of the request log. */
+export const redactAuth = (line: string) => line.replace(/([?&]auth=)[^&\s]*/gi, "$1***");
+
 export function isAllowedRedirect(target: string, allowedHosts: string[]): boolean {
   try {
     const u = new URL(target);
@@ -51,7 +54,7 @@ export function createApp(deps: AppDeps): Hono {
   const page = (name: string, key?: string) => render(templates, name, { title: TITLE, key });
 
   const app = new Hono();
-  if (deps.log !== false) app.use(logger());
+  if (deps.log !== false) app.use(logger((msg, ...rest) => console.log(redactAuth(msg), ...rest)));
   // The pages load Bootstrap/jQuery/Kakao SDK from CDNs and use inline scripts, so no CSP here.
   app.use(secureHeaders({ contentSecurityPolicy: undefined, crossOriginEmbedderPolicy: false }));
 
@@ -75,10 +78,14 @@ export function createApp(deps: AppDeps): Hono {
 
   // Web form: random restaurant around the map marker (or around `?query=` place)
   app.post("/sendToGo", async (c) => {
-    const body = await c.req.json().catch(() => null);
-    if (!body || typeof body !== "object") return jsonError(c, 400, "Bad Request");
-    const str = (v: unknown) => (v === undefined || v === null ? "" : String(v));
-    const cond: SearchCond = { category: str(body.category), x: str(body.x), y: str(body.y), radius: str(body.radius) };
+    // Same contract as Gin's BindJSON into string fields: a JSON object whose fields are strings (or absent/null).
+    const body: unknown = await c.req.json().catch(() => null);
+    if (!body || typeof body !== "object" || Array.isArray(body)) return jsonError(c, 400, "Bad Request");
+    const fields = body as Record<string, unknown>;
+    const str = (k: string) => (fields[k] === undefined || fields[k] === null ? "" : fields[k]);
+    const [category, x, y, radius] = ["category", "x", "y", "radius"].map(str);
+    if (![category, x, y, radius].every((v) => typeof v === "string")) return jsonError(c, 400, "Bad Request");
+    const cond: SearchCond = { category, x, y, radius } as SearchCond;
     let qryPlaceName = "";
 
     const qry = c.req.query("query");

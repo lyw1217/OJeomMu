@@ -1,7 +1,8 @@
 import { quadrantRects } from "./geo.js";
 
 export const KAKAO_KEYWORD_URL = "https://dapi.kakao.com/v2/local/search/keyword.json";
-const MAX_SEARCH_PAGE = 10;
+const MAX_SEARCH_PAGE = 10; // pages 1..9, same bound as the Go loop
+export const UPSTREAM_TIMEOUT_MS = 5_000;
 
 export interface Place {
   id: string;
@@ -30,7 +31,7 @@ export interface KeywordParams {
 
 export type Fetch = typeof fetch;
 
-/** Kakao keyword search, following pages until `is_end` (max 10 pages, 15 per page). */
+/** Kakao keyword search, following pages until `is_end` (max 9 pages, 15 per page). */
 export async function searchKeyword(params: KeywordParams, restKey: string, fetchFn: Fetch = fetch): Promise<Place[]> {
   const places: Place[] = [];
   for (let page = 1; page < MAX_SEARCH_PAGE; page++) {
@@ -42,7 +43,10 @@ export async function searchKeyword(params: KeywordParams, restKey: string, fetc
     url.searchParams.set("size", "15");
     url.searchParams.set("sort", "accuracy");
 
-    const res = await fetchFn(url, { headers: { Authorization: `KakaoAK ${restKey}` } });
+    const res = await fetchFn(url, {
+      headers: { Authorization: `KakaoAK ${restKey}` },
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS), // also bounds reading the body
+    });
     if (!res.ok) throw new Error(`kakao keyword search: HTTP ${res.status}`);
     const body = (await res.json()) as KeywordResponse;
     places.push(...(body.documents ?? []));
@@ -67,7 +71,12 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export function categoryLabel(category: string | undefined): string | null {
-  return (category && CATEGORY_LABELS[category]) || null;
+  return (category && Object.hasOwn(CATEGORY_LABELS, category) && CATEGORY_LABELS[category]) || null;
+}
+
+/** strconv.ParseFloat-like: no surrounding spaces, no hex/binary; NaN when it would fail in Go. */
+export function parseFloatStrict(s: string | undefined): number {
+  return s && /^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/.test(s) ? Number(s) : NaN;
 }
 
 export interface SearchCond {
@@ -81,7 +90,8 @@ export type Random = () => number;
 
 /**
  * Search "맛집" restaurants (FD6) in the four quadrants around (x, y), filter by category and pick one at random.
- * Returns null when nothing matched. Quadrants that fail are skipped, as in the Go version.
+ * Returns null when nothing matched. Quadrants that fail are skipped, as in the Go version, but when all four
+ * fail it throws, so an upstream outage is not reported as "no restaurants".
  */
 export async function pickRestaurant(
   cond: SearchCond,
@@ -89,19 +99,22 @@ export async function pickRestaurant(
   fetchFn: Fetch = fetch,
   random: Random = Math.random,
 ): Promise<{ place: Place; total: number } | null> {
-  const lng = Number(cond.x);
-  const lat = Number(cond.y);
-  if (!cond.x || !cond.y || !Number.isFinite(lng) || !Number.isFinite(lat)) {
+  const lng = parseFloatStrict(cond.x);
+  const lat = parseFloatStrict(cond.y);
+  if (!Number.isFinite(lng) || !Number.isFinite(lat)) {
     throw new Error(`invalid coordinates x=${cond.x} y=${cond.y}`);
   }
-  const radius = Number(cond.radius);
-  const km = cond.radius && Number.isFinite(radius) ? radius : 0.3;
+  const radius = parseFloatStrict(cond.radius);
+  const km = Number.isFinite(radius) ? radius : 0.3;
 
   const results = await Promise.allSettled(
     quadrantRects(lat, lng, km).map((rect) =>
       searchKeyword({ query: "맛집", category_group_code: "FD6", rect }, restKey, fetchFn),
     ),
   );
+  if (results.every((r) => r.status === "rejected")) {
+    throw new Error("kakao: all quadrant searches failed", { cause: results.map((r) => (r as PromiseRejectedResult).reason) });
+  }
   const all = results.flatMap((r) => {
     if (r.status === "fulfilled") return r.value;
     console.error("[kakao] quadrant search failed:", r.reason);
